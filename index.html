@@ -40,7 +40,10 @@ a{text-decoration:none;}
 @keyframes wiggle{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
 @keyframes ceramicShine{0%{left:-100%}100%{left:200%}}
 @keyframes rotateSlow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-@keyframes carouselSlide{from{transform:translateX(var(--from));opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* Continuous scroll animations */
+@keyframes scrollLeft{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes scrollLeftVideos{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
 /* ═══════════════════════════════════════════
    UTILITIES
@@ -69,7 +72,6 @@ nav{
 }
 .nav-inner{max-width:1140px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between;}
 .nav-logo{display:flex;align-items:center;gap:10px;cursor:pointer;}
-/* CHANGE: logo fully white */
 .nav-logo-img{height:40px;width:auto;transition:transform .28s cubic-bezier(.34,1.56,.64,1);filter:brightness(0) invert(1);}
 .nav-logo-img:hover{transform:scale(1.06);}
 .nav-logo-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:#fff;line-height:1.1;}
@@ -131,7 +133,7 @@ nav{
 }
 
 /* ═══════════════════════════════════════════
-   STATS — smaller cards & font
+   STATS
 ═══════════════════════════════════════════ */
 .stats-section{padding:28px 20px;background:#0d0d0d;border-bottom:1px solid rgba(255,255,255,.04);}
 .stats-grid{max-width:800px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;}
@@ -144,7 +146,6 @@ nav{
 }
 .stat-card:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 12px 32px rgba(14,165,233,.18);}
 .stat-orb{position:absolute;top:-14px;right:-14px;width:56px;height:56px;border-radius:50%;background:radial-gradient(circle,rgba(14,165,233,.08),transparent 70%);pointer-events:none;}
-/* CHANGE: smaller stat number font */
 .stat-num{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;line-height:1;}
 .stat-label{color:#64748b;font-size:10px;font-weight:500;margin-top:4px;}
 .stat-line{width:22px;height:2px;background:linear-gradient(90deg,#0ea5e9,transparent);border-radius:2px;margin:8px auto 0;}
@@ -198,7 +199,7 @@ nav{
 .marquee-item{color:rgba(255,255,255,.5);font-weight:600;font-size:12px;margin-right:42px;white-space:nowrap;display:inline-flex;align-items:center;gap:8px;}
 
 /* ═══════════════════════════════════════════
-   SERVICES — compact grid
+   SERVICES
 ═══════════════════════════════════════════ */
 #services{padding:52px 20px;background:#080808;}
 .section-label{
@@ -237,23 +238,32 @@ nav{
 .services-cta{text-align:center;margin-top:24px;}
 
 /* ═══════════════════════════════════════════
-   PROJECTS CAROUSEL — auto-sliding
+   PROJECTS — CONTINUOUS SCROLL CAROUSEL
 ═══════════════════════════════════════════ */
 #projects{padding:64px 0;background:#050505;overflow:hidden;}
 .projects-inner{max-width:1140px;margin:0 auto;padding:0 20px;}
 
-.carousel-outer{position:relative;width:100%;overflow:hidden;padding:20px 0 40px;}
-.carousel-track-wrap{overflow:hidden;position:relative;}
-.carousel-track{
+/* Continuous scroll wrapper */
+.proj-scroll-outer{
+  width:100%;
+  overflow:hidden;
+  position:relative;
+  /* fade edges */
+  mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%);
+  -webkit-mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%);
+  padding:20px 0 28px;
+}
+.proj-scroll-outer:hover .proj-scroll-track{animation-play-state:paused;}
+
+.proj-scroll-track{
   display:flex;
   gap:24px;
-  transition:transform .6s cubic-bezier(.22,1,.36,1);
-  will-change:transform;
+  width:max-content;
+  animation:scrollLeft 28s linear infinite;
 }
 
 .proj-carousel-card{
-  flex:0 0 calc(70% - 12px);
-  max-width:520px;
+  flex:0 0 420px;
   background:#0d0d0d;
   border-radius:20px;
   overflow:hidden;
@@ -262,21 +272,25 @@ nav{
   cursor:pointer;
 }
 @media(max-width:768px){
-  .proj-carousel-card{flex:0 0 calc(88% - 12px);}
+  .proj-carousel-card{flex:0 0 300px;}
 }
-.proj-carousel-card.active-card{
+.proj-carousel-card:hover{
   border-color:rgba(14,165,233,.3);
   box-shadow:0 20px 60px rgba(14,165,233,.15);
+  transform:translateY(-4px);
 }
+/* IMAGE: fills card fully, no zoom trick — tall enough to show full image */
 .proj-carousel-img{
   width:100%;
-  aspect-ratio:16/9;
+  height:260px;
   object-fit:cover;
+  object-position:center center;
   display:block;
   transition:transform .5s cubic-bezier(.22,1,.36,1);
 }
-.proj-carousel-card:hover .proj-carousel-img{transform:scale(1.04);}
-.proj-carousel-body{padding:20px 24px 24px;}
+.proj-carousel-card:hover .proj-carousel-img{transform:scale(1.03);}
+
+.proj-carousel-body{padding:18px 22px 22px;}
 .proj-carousel-tag{
   display:inline-block;padding:3px 10px;border-radius:100px;font-size:10px;font-weight:700;
   letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px;
@@ -285,41 +299,31 @@ nav{
 .tag-facelift{background:rgba(14,165,233,.1);color:#38bdf8;border:1px solid rgba(14,165,233,.2);}
 .tag-ceramic{background:rgba(139,92,246,.1);color:#a78bfa;border:1px solid rgba(139,92,246,.2);}
 .tag-service{background:rgba(34,197,94,.1);color:#4ade80;border:1px solid rgba(34,197,94,.2);}
-.proj-carousel-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#fff;margin-bottom:6px;}
+.proj-carousel-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:#fff;margin-bottom:5px;}
 .proj-carousel-desc{font-size:12px;color:rgba(255,255,255,.38);line-height:1.65;}
 
-.carousel-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:8px;}
-.carousel-btn{
-  width:44px;height:44px;border-radius:50%;
-  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;transition:all .25s;
-}
-.carousel-btn:hover{background:rgba(14,165,233,.15);border-color:rgba(14,165,233,.4);}
-.carousel-dots{display:flex;gap:6px;align-items:center;}
-.carousel-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.15);border:none;cursor:pointer;transition:all .3s;padding:0;}
-.carousel-dot.active{background:#0ea5e9;width:22px;border-radius:4px;}
-
 /* ═══════════════════════════════════════════
-   INSTAGRAM VIDEOS — small cards, single row, auto-sliding
+   INSTAGRAM VIDEOS — CONTINUOUS SCROLL
 ═══════════════════════════════════════════ */
 #social-videos{padding:64px 20px;background:#080808;}
 
-/* Sliding row container */
-.videos-slider-outer{
-  position:relative;
-  overflow:hidden;
+.videos-scroll-outer{
   width:100%;
-  max-width:1100px;
-  margin:0 auto;
+  overflow:hidden;
+  position:relative;
+  mask-image:linear-gradient(to right,transparent 0%,black 6%,black 94%,transparent 100%);
+  -webkit-mask-image:linear-gradient(to right,transparent 0%,black 6%,black 94%,transparent 100%);
+  padding:10px 0 16px;
 }
-.videos-slider-track{
+.videos-scroll-outer:hover .videos-scroll-track{animation-play-state:paused;}
+
+.videos-scroll-track{
   display:flex;
   gap:14px;
-  transition:transform .6s cubic-bezier(.22,1,.36,1);
-  will-change:transform;
+  width:max-content;
+  animation:scrollLeftVideos 24s linear infinite;
 }
-/* CHANGE: small video cards */
+
 .video-card{
   flex:0 0 200px;
   background:#0d0d0d;border-radius:14px;overflow:hidden;
@@ -344,19 +348,6 @@ nav{
   border-top:1px solid rgba(255,255,255,.05);
   line-height:1.4;
 }
-
-/* Video slider nav */
-.videos-nav{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:18px;}
-.videos-nav-btn{
-  width:36px;height:36px;border-radius:50%;
-  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;transition:all .25s;
-}
-.videos-nav-btn:hover{background:rgba(14,165,233,.15);border-color:rgba(14,165,233,.4);}
-.videos-dots{display:flex;gap:5px;align-items:center;}
-.videos-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.15);border:none;cursor:pointer;transition:all .3s;padding:0;}
-.videos-dot.active{background:#0ea5e9;width:18px;border-radius:3px;}
 
 /* ═══════════════════════════════════════════
    SOCIAL FOLLOW SECTION
@@ -384,7 +375,7 @@ nav{
 .sp-note{margin-top:20px;font-size:12px;color:rgba(255,255,255,.2);}
 
 /* ═══════════════════════════════════════════
-   ABOUT (removed why choose us, kept info card)
+   ABOUT
 ═══════════════════════════════════════════ */
 #about{padding:64px 20px;background:#0a0a0a;}
 .about-grid{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;}
@@ -550,7 +541,7 @@ footer{background:#040404;color:rgba(255,255,255,.35);padding:44px 22px 24px;bor
   <div id="video-banner">
     <div class="vb-bg"></div>
     <div class="vb-scanline"></div>
-    <video class="vb-video" autoplay muted loop playsinline webkit-playsinline>
+    <video class="vb-video" autoplay muted loop playsinline>
       <source src="shopvideo.mp4" type="video/mp4"/>
     </video>
     <div class="vb-vignette"></div>
@@ -585,7 +576,7 @@ footer{background:#040404;color:rgba(255,255,255,.35);padding:44px 22px 24px;bor
       <div class="stat-label">Satisfaction Rate</div>
       <div class="stat-line"></div>
     </div>
-
+  </div>
 </section>
 
 <!-- ══════════════ HERO ══════════════ -->
@@ -644,7 +635,7 @@ footer{background:#040404;color:rgba(255,255,255,.35);padding:44px 22px 24px;bor
   </div>
 </section>
 
-<!-- ══════════════ OUR PROJECTS CAROUSEL (auto-sliding) ══════════════ -->
+<!-- ══════════════ OUR PROJECTS — CONTINUOUS SCROLL ══════════════ -->
 <section id="projects">
   <div class="projects-inner">
     <div class="section-center reveal">
@@ -653,27 +644,20 @@ footer{background:#040404;color:rgba(255,255,255,.35);padding:44px 22px 24px;bor
         Portfolio
       </div>
       <h2 class="section-h2 syne">Our <span class="gt">Projects</span></h2>
-      <p style="color:rgba(255,255,255,.3);font-size:14px;margin-top:8px;">Swipe through our work.</p>
+      <p style="color:rgba(255,255,255,.3);font-size:14px;margin-top:8px;">A showcase of our finest work.</p>
       <div class="section-divider"></div>
     </div>
-    <div class="carousel-outer">
-      <div class="carousel-track-wrap">
-        <div class="carousel-track" id="projCarouselTrack"></div>
-      </div>
-      <div class="carousel-nav" style="margin-top:24px;">
-        <button class="carousel-btn" id="projPrev" onclick="moveCarousel(-1)">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-        </button>
-        <div class="carousel-dots" id="projDots"></div>
-        <button class="carousel-btn" id="projNext" onclick="moveCarousel(1)">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
-      </div>
+  </div>
+
+  <!-- Continuous scroll — no nav buttons needed -->
+  <div class="proj-scroll-outer">
+    <div class="proj-scroll-track" id="projScrollTrack">
+      <!-- cards injected by JS (doubled for seamless loop) -->
     </div>
   </div>
 </section>
 
-<!-- ══════════════ INSTAGRAM VIDEOS (small cards, auto-sliding row) ══════════════ -->
+<!-- ══════════════ INSTAGRAM VIDEOS — CONTINUOUS SCROLL ══════════════ -->
 <section id="social-videos">
   <div style="max-width:1100px;margin:0 auto;">
     <div class="section-center reveal">
@@ -686,8 +670,9 @@ footer{background:#040404;color:rgba(255,255,255,.35);padding:44px 22px 24px;bor
       <div class="section-divider"></div>
     </div>
 
-    <div class="videos-slider-outer reveal">
-      <div class="videos-slider-track" id="videosTrack">
+    <div class="videos-scroll-outer reveal">
+      <div class="videos-scroll-track" id="videosScrollTrack">
+        <!-- Set 1 -->
         <div class="video-card">
           <div class="video-embed-wrap">
             <iframe src="https://www.instagram.com/p/Cydqg6DIS4Q/embed/" scrolling="no" allowtransparency="true" allowfullscreen="true"></iframe>
@@ -710,19 +695,34 @@ footer{background:#040404;color:rgba(255,255,255,.35);padding:44px 22px 24px;bor
           <div class="video-embed-wrap">
             <iframe src="https://www.instagram.com/p/DQ91E1dDBr4/embed/" scrolling="no" allowtransparency="true" allowfullscreen="true"></iframe>
           </div>
-          <div class="video-card-label">E250 — General Check Up & Service</div>
+          <div class="video-card-label">E250 — General Check Up &amp; Service</div>
+        </div>
+        <!-- Set 2 (duplicate for seamless loop) -->
+        <div class="video-card">
+          <div class="video-embed-wrap">
+            <iframe src="https://www.instagram.com/p/Cydqg6DIS4Q/embed/" scrolling="no" allowtransparency="true" allowfullscreen="true"></iframe>
+          </div>
+          <div class="video-card-label">Toyota Probox Offroad Build</div>
+        </div>
+        <div class="video-card">
+          <div class="video-embed-wrap">
+            <iframe src="https://www.instagram.com/p/C8FZRnto_mh/embed/" scrolling="no" allowtransparency="true" allowfullscreen="true"></iframe>
+          </div>
+          <div class="video-card-label">Certified Revify Ceramic Coating</div>
+        </div>
+        <div class="video-card">
+          <div class="video-embed-wrap">
+            <iframe src="https://www.instagram.com/p/DSQbOvNDG4k/embed/" scrolling="no" allowtransparency="true" allowfullscreen="true"></iframe>
+          </div>
+          <div class="video-card-label">LC300 Full Offroad Parts Installed</div>
+        </div>
+        <div class="video-card">
+          <div class="video-embed-wrap">
+            <iframe src="https://www.instagram.com/p/DQ91E1dDBr4/embed/" scrolling="no" allowtransparency="true" allowfullscreen="true"></iframe>
+          </div>
+          <div class="video-card-label">E250 — General Check Up &amp; Service</div>
         </div>
       </div>
-    </div>
-
-    <div class="videos-nav">
-      <button class="videos-nav-btn" onclick="moveVideos(-1)">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-      </button>
-      <div class="videos-dots" id="videosDots"></div>
-      <button class="videos-nav-btn" onclick="moveVideos(1)">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-      </button>
     </div>
   </div>
 </section>
@@ -757,7 +757,7 @@ footer{background:#040404;color:rgba(255,255,255,.35);padding:44px 22px 24px;bor
   </div>
 </section>
 
-<!-- ══════════════ ABOUT (no why choose us) ══════════════ -->
+<!-- ══════════════ ABOUT ══════════════ -->
 <section id="about">
   <div class="about-grid">
     <div class="reveal left">
@@ -1050,7 +1050,7 @@ const TESTIMONIALS=[
 
 const PROJECTS=[
   {tag:'facelift',tagLabel:'Facelift',title:'Full Vehicle Facelift',desc:'Body kit fitment, custom grille, colour-matched trim and paintwork correction.',img:'images/proj_facelift.jpeg'},
-  {tag:'ceramic', tagLabel:'Full Car Wash',title:'Full Interior And Exterior Detial',desc:'Multi-stage machine polish, paint decontamination and Revify self-healing ceramic coat.',img:'images/proj_paint.jpeg'},
+  {tag:'ceramic', tagLabel:'Full Car Wash',title:'Full Interior And Exterior Detail',desc:'Multi-stage machine polish, paint decontamination and Revify self-healing ceramic coat.',img:'images/proj_paint.jpeg'},
   {tag:'offroad', tagLabel:'Full 4x4 Build',title:'Full 4x4 Offroad Build',desc:'Lift kit, Old Man Emu suspension, ARB snorkel, rock sliders and LED light bar.',img:'images/proj_offroad.jpeg'},
   {tag:'service', tagLabel:'Ceramic Coating',title:'Ceramic Coating',desc:'Self Healing Ceramic Coating',img:'images/proj_service.jpeg'},
 ];
@@ -1079,6 +1079,33 @@ function closeMobileMenu(){document.getElementById('mobileDrawer').classList.rem
   `).join('');
 })();
 
+/* ── Projects — Continuous CSS scroll (doubled cards) ── */
+(function(){
+  const track = document.getElementById('projScrollTrack');
+
+  // Build one card's HTML
+  function cardHTML(p) {
+    return `
+      <div class="proj-carousel-card">
+        <img class="proj-carousel-img" src="${p.img}" alt="${p.title}" loading="lazy"
+          onerror="this.style.background='#1a1a1a';this.style.minHeight='260px';"/>
+        <div class="proj-carousel-body">
+          <span class="proj-carousel-tag tag-${p.tag}">${p.tagLabel}</span>
+          <div class="proj-carousel-title">${p.title}</div>
+          <div class="proj-carousel-desc">${p.desc}</div>
+        </div>
+      </div>`;
+  }
+
+  // Double the cards for seamless looping
+  const allCards = [...PROJECTS, ...PROJECTS].map(cardHTML).join('');
+  track.innerHTML = allCards;
+
+  // Calculate the total width of ONE set and set it as the animation distance
+  // We use CSS: animation scrollLeft translates -50% (half = one set of cards)
+  // This works because we duplicated the cards, so 50% = exactly one full loop
+})();
+
 /* ── Testimonials ── */
 let currentTesti=0;
 (function(){
@@ -1099,116 +1126,6 @@ let currentTesti=0;
 })();
 function setTesti(i){document.getElementById(`testi${currentTesti}`).classList.remove('active');document.getElementById(`tDot${currentTesti}`).classList.remove('active');currentTesti=i;document.getElementById(`testi${i}`).classList.add('active');document.getElementById(`tDot${i}`).classList.add('active');}
 setInterval(()=>setTesti((currentTesti+1)%TESTIMONIALS.length),5000);
-
-/* ── Projects Carousel (auto-sliding every 3.5s) ── */
-let projIdx=0;
-let projAutoTimer=null;
-
-(function(){
-  const track=document.getElementById('projCarouselTrack');
-  const dots=document.getElementById('projDots');
-  track.innerHTML=PROJECTS.map((p,i)=>`
-    <div class="proj-carousel-card${i===0?' active-card':''}" id="pcard${i}">
-      <img class="proj-carousel-img" src="${p.img}" alt="${p.title}" loading="lazy" onerror="this.style.background='#111';this.style.height='220px';"/>
-      <div class="proj-carousel-body">
-        <span class="proj-carousel-tag tag-${p.tag}">${p.tagLabel}</span>
-        <div class="proj-carousel-title">${p.title}</div>
-        <div class="proj-carousel-desc">${p.desc}</div>
-      </div>
-    </div>
-  `).join('');
-  dots.innerHTML=PROJECTS.map((_,i)=>`<button class="carousel-dot${i===0?' active':''}" id="pdot${i}" onclick="goCarousel(${i})"></button>`).join('');
-  updateCarousel();
-  startProjAuto();
-})();
-
-function getCardWidth(){
-  const card=document.querySelector('.proj-carousel-card');
-  if(!card)return 0;
-  return card.offsetWidth+24;
-}
-function updateCarousel(){
-  const track=document.getElementById('projCarouselTrack');
-  const wrap=document.querySelector('.carousel-track-wrap');
-  const wrapW=wrap.offsetWidth;
-  const cardW=getCardWidth();
-  const offset=(wrapW/2)-(cardW/2)-(projIdx*cardW);
-  track.style.transform=`translateX(${offset}px)`;
-  PROJECTS.forEach((_,i)=>{
-    const c=document.getElementById('pcard'+i);
-    const d=document.getElementById('pdot'+i);
-    if(c)c.classList.toggle('active-card',i===projIdx);
-    if(d)d.classList.toggle('active',i===projIdx);
-  });
-}
-function moveCarousel(dir){
-  projIdx=(projIdx+dir+PROJECTS.length)%PROJECTS.length;
-  updateCarousel();
-  restartProjAuto();
-}
-function goCarousel(i){projIdx=i;updateCarousel();restartProjAuto();}
-function startProjAuto(){projAutoTimer=setInterval(()=>{projIdx=(projIdx+1)%PROJECTS.length;updateCarousel();},3500);}
-function restartProjAuto(){clearInterval(projAutoTimer);startProjAuto();}
-
-/* touch swipe on projects carousel */
-(function(){
-  const wrap=document.querySelector('.carousel-track-wrap');
-  if(!wrap)return;
-  let startX=0;
-  wrap.addEventListener('touchstart',e=>{startX=e.touches[0].clientX;},{passive:true});
-  wrap.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-startX;if(Math.abs(dx)>40)moveCarousel(dx<0?1:-1);},{passive:true});
-})();
-window.addEventListener('resize',updateCarousel);
-
-/* ── Instagram Videos Slider (auto-sliding every 3s) ── */
-let videoIdx=0;
-let videoAutoTimer=null;
-const VIDEO_COUNT=4;
-const VIDEOS_VISIBLE=()=>window.innerWidth>=900?3:window.innerWidth>=600?2:1;
-
-function buildVideosDots(){
-  const d=document.getElementById('videosDots');
-  const steps=VIDEO_COUNT-VIDEOS_VISIBLE()+1;
-  d.innerHTML=Array.from({length:steps},(_,i)=>`<button class="videos-dot${i===0?' active':''}" id="vdot${i}" onclick="goVideos(${i})"></button>`).join('');
-}
-function updateVideos(){
-  const track=document.getElementById('videosTrack');
-  const cardW=200+14; // card width + gap
-  track.style.transform=`translateX(${-videoIdx*cardW}px)`;
-  const steps=VIDEO_COUNT-VIDEOS_VISIBLE()+1;
-  document.querySelectorAll('.videos-dot').forEach((d,i)=>d.classList.toggle('active',i===videoIdx));
-}
-function moveVideos(dir){
-  const maxIdx=VIDEO_COUNT-VIDEOS_VISIBLE();
-  videoIdx=Math.max(0,Math.min(videoIdx+dir,maxIdx));
-  updateVideos();
-  restartVideoAuto();
-}
-function goVideos(i){videoIdx=i;updateVideos();restartVideoAuto();}
-function startVideoAuto(){
-  videoAutoTimer=setInterval(()=>{
-    const maxIdx=VIDEO_COUNT-VIDEOS_VISIBLE();
-    videoIdx=videoIdx>=maxIdx?0:videoIdx+1;
-    updateVideos();
-  },3000);
-}
-function restartVideoAuto(){clearInterval(videoAutoTimer);startVideoAuto();}
-
-window.addEventListener('DOMContentLoaded',()=>{
-  buildVideosDots();
-  updateVideos();
-  startVideoAuto();
-});
-
-/* touch swipe on videos */
-(function(){
-  const wrap=document.getElementById('videosTrack');
-  if(!wrap)return;
-  let startX=0;
-  wrap.addEventListener('touchstart',e=>{startX=e.touches[0].clientX;},{passive:true});
-  wrap.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-startX;if(Math.abs(dx)>40)moveVideos(dx<0?1:-1);},{passive:true});
-})();
-window.addEventListener('resize',()=>{buildVideosDots();updateVideos();});
 
 /* ── Counter ── */
 function animateCounter(el){
@@ -1233,33 +1150,6 @@ function submitForm(){
   ['formName','formPhone','formEmail','formService','formMessage'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   setTimeout(()=>s.classList.remove('show'),4000);
 }
-
-/* ── Video Autoplay Fix for iOS ── */
-function fixVideoAutoplay() {
-  const video = document.querySelector('.vb-video');
-  if (video) {
-    // Ensure video is muted
-    video.muted = true;
-
-    // Try to play the video
-    const playPromise = video.play();
-
-    if (playPromise !== undefined) {
-      playPromise.then(_ => {
-        // Autoplay started successfully
-      }).catch(error => {
-        // Autoplay was prevented
-        // Show a play button overlay or try again after user interaction
-        console.log('Autoplay prevented:', error);
-      });
-    }
-  }
-}
-
-// Run on DOM content loaded and after potential user interactions
-document.addEventListener('DOMContentLoaded', fixVideoAutoplay);
-// Also try after a short delay in case the video needs time to load
-setTimeout(fixVideoAutoplay, 500);
 </script>
 </body>
 </html>
