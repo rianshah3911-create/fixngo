@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Fix N Go Auto Services – Mombasa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════ */
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#080808;color:#e2e8f0;overflow-x:hidden;}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:#0ea5e9;border-radius:3px;}
+.syne{font-family:'Syne',sans-serif;}
+img{display:block;}
+a{text-decoration:none;}
+
+/* ═══════════════════════════════════════════
+   KEYFRAMES
+═══════════════════════════════════════════ */
+@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes floatR{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-10px) rotate(3deg)}}
+@keyframes pulse{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.12)}}
+@keyframes blob{0%,100%{border-radius:58% 42% 62% 38%/46% 54% 46% 54%}33%{border-radius:70% 30% 50% 50%/30% 70% 30% 70%}66%{border-radius:38% 62% 38% 62%/54% 46% 54% 46%}}
+@keyframes scanline{0%{top:-4px}100%{top:100%}}
+@keyframes glowPulse{0%,100%{box-shadow:0 0 20px rgba(14,165,233,.3)}50%{box-shadow:0 0 50px rgba(14,165,233,.7),0 0 80px rgba(14,165,233,.3)}}
+@keyframes particleFloat{0%{transform:translateY(0) translateX(0);opacity:0}20%{opacity:.6}80%{opacity:.4}100%{transform:translateY(-130px) translateX(25px);opacity:0}}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:none}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:none}}
+@keyframes imageKen{0%{transform:scale(1) translate(0,0)}100%{transform:scale(1.08) translate(-1%,-1%)}}
+@keyframes overlayFade{from{opacity:0}to{opacity:1}}
+@keyframes slideInUp{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes wiggle{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+@keyframes ceramicShine{0%{left:-100%}100%{left:200%}}
+@keyframes rotateSlow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes carouselSlide{from{transform:translateX(var(--from));opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* ═══════════════════════════════════════════
+   UTILITIES
+═══════════════════════════════════════════ */
+.gt{background:linear-gradient(120deg,#0284c7,#38bdf8,#0ea5e9);background-size:200% auto;
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    animation:shimmer 4s linear infinite;}
+
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1);}
+.reveal.left{transform:translateX(-36px);}
+.reveal.right{transform:translateX(36px);}
+.reveal.scale{transform:scale(.88);}
+.reveal.visible{opacity:1;transform:none;}
+
+/* ═══════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  padding:12px 0;
+  background:rgba(8,8,8,.95);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(14,165,233,.12);
+  box-shadow:0 2px 24px rgba(0,0,0,.5);
+  transition:all .35s ease;
+}
+.nav-inner{max-width:1140px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{display:flex;align-items:center;gap:10px;cursor:pointer;}
+/* CHANGE: logo fully white */
+.nav-logo-img{height:40px;width:auto;transition:transform .28s cubic-bezier(.34,1.56,.64,1);filter:brightness(0) invert(1);}
+.nav-logo-img:hover{transform:scale(1.06);}
+.nav-logo-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:#fff;line-height:1.1;}
+.nav-logo-sub{font-size:9px;font-weight:700;color:#0ea5e9;letter-spacing:.12em;text-transform:uppercase;}
+.nav-links{display:flex;gap:24px;align-items:center;}
+.nav-link{
+  font-size:13px;font-weight:500;cursor:pointer;color:rgba(255,255,255,.55);
+  position:relative;padding-bottom:2px;transition:color .22s;text-transform:capitalize;
+}
+.nav-link::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1.5px;background:#0ea5e9;transition:width .25s cubic-bezier(.22,1,.36,1);}
+.nav-link:hover{color:#0ea5e9;}.nav-link:hover::after{width:100%;}
+.btn-primary{
+  background:linear-gradient(135deg,#0ea5e9,#0284c7);color:white;border:none;
+  border-radius:9px;padding:9px 20px;font-weight:600;font-size:13px;cursor:pointer;
+  transition:all .22s;box-shadow:0 4px 14px rgba(14,165,233,.28);font-family:inherit;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(14,165,233,.5);}
+.btn-whatsapp-nav{
+  background:linear-gradient(135deg,#25d366,#128c7e);color:white;border:none;
+  border-radius:9px;padding:9px 18px;font-weight:600;font-size:13px;cursor:pointer;
+  transition:all .22s;box-shadow:0 4px 14px rgba(37,211,102,.28);font-family:inherit;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.btn-whatsapp-nav:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(37,211,102,.46);}
+.menu-btn{background:none;border:none;cursor:pointer;padding:5px;display:none;transition:transform .3s cubic-bezier(.22,1,.36,1);}
+.menu-btn.open{transform:rotate(90deg);}
+@media(max-width:768px){.nav-links{display:none!important;}.menu-btn{display:block;}}
+.mobile-drawer{
+  display:none;background:rgba(10,10,10,.98);border-top:1px solid rgba(255,255,255,.06);
+  padding:14px 20px;flex-direction:column;gap:2px;
+  animation:slideInUp .25s ease;
+}
+.mobile-drawer.open{display:flex;}
+.mobile-nav-link{
+  padding:12px 8px;font-size:15px;font-weight:500;color:rgba(255,255,255,.6);
+  text-transform:capitalize;cursor:pointer;border-radius:8px;transition:background .18s,color .18s;
+}
+.mobile-nav-link:hover{background:rgba(14,165,233,.08);color:#0ea5e9;}
+
+/* ═══════════════════════════════════════════
+   VIDEO BANNER
+═══════════════════════════════════════════ */
+.video-banner-wrap{margin-top:64px;}
+#video-banner{
+  position:relative;width:100%;overflow:hidden;
+  height:56vw;max-height:580px;min-height:260px;
+}
+.vb-bg{position:absolute;inset:0;background:#020408;z-index:0;}
+.vb-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;}
+.vb-scanline{
+  position:absolute;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(14,165,233,.35),transparent);
+  animation:scanline 3.5s linear infinite;pointer-events:none;z-index:3;
+}
+.vb-vignette{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse at center,transparent 45%,rgba(0,0,0,.7) 100%);
+  z-index:2;pointer-events:none;
+}
+
+/* ═══════════════════════════════════════════
+   STATS — smaller cards & font
+═══════════════════════════════════════════ */
+.stats-section{padding:28px 20px;background:#0d0d0d;border-bottom:1px solid rgba(255,255,255,.04);}
+.stats-grid{max-width:800px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;}
+.stat-card{
+  background:linear-gradient(135deg,#111,#161b22);
+  border-radius:12px;border:1px solid rgba(14,165,233,.1);
+  padding:14px 12px;text-align:center;
+  transition:transform .28s cubic-bezier(.22,1,.36,1),box-shadow .28s;
+  position:relative;overflow:hidden;cursor:default;
+}
+.stat-card:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 12px 32px rgba(14,165,233,.18);}
+.stat-orb{position:absolute;top:-14px;right:-14px;width:56px;height:56px;border-radius:50%;background:radial-gradient(circle,rgba(14,165,233,.08),transparent 70%);pointer-events:none;}
+/* CHANGE: smaller stat number font */
+.stat-num{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;line-height:1;}
+.stat-label{color:#64748b;font-size:10px;font-weight:500;margin-top:4px;}
+.stat-line{width:22px;height:2px;background:linear-gradient(90deg,#0ea5e9,transparent);border-radius:2px;margin:8px auto 0;}
+
+/* ═══════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════ */
+#hero{
+  position:relative;
+  height:clamp(200px,30vw,340px);
+  display:flex;align-items:center;overflow:hidden;
+}
+.hero-bg-img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  object-position:center 40%;
+  animation:imageKen 14s ease-in-out infinite alternate;z-index:0;
+}
+.hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(120deg,rgba(0,0,0,.92) 0%,rgba(0,0,0,.72) 55%,rgba(0,0,0,.5) 100%);
+  z-index:1;
+}
+#particles-container{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden;}
+.hero-content{max-width:1140px;margin:0 auto;padding:0 24px;position:relative;z-index:3;width:100%;}
+.hero-inner{max-width:680px;}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(14,165,233,.12);border:1px solid rgba(14,165,233,.25);
+  border-radius:100px;padding:4px 12px;margin-bottom:10px;
+}
+.hero-dot{width:6px;height:6px;border-radius:50%;background:#22d3ee;animation:pulse 2s infinite;}
+.hero-badge-text{font-size:10px;font-weight:700;color:#38bdf8;letter-spacing:.1em;text-transform:uppercase;}
+.hero-h1{font-family:'Syne',sans-serif;font-size:clamp(22px,4vw,42px);font-weight:800;color:white;line-height:1.06;margin-bottom:12px;}
+.hero-p{font-size:clamp(12px,1.4vw,14px);color:rgba(255,255,255,.55);line-height:1.7;margin-bottom:18px;max-width:440px;}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.hero-logo-watermark{position:absolute;right:32px;top:50%;transform:translateY(-50%);opacity:.1;z-index:2;pointer-events:none;}
+.hero-logo-watermark img{height:clamp(60px,10vw,120px);width:auto;filter:brightness(0) invert(1);}
+.hero-trust{display:flex;gap:16px;margin-top:14px;flex-wrap:wrap;}
+.trust-item{display:flex;align-items:center;gap:5px;color:rgba(255,255,255,.4);font-size:11px;font-weight:500;}
+
+/* ═══════════════════════════════════════════
+   MARQUEE
+═══════════════════════════════════════════ */
+.marquee-bar{
+  background:linear-gradient(90deg,#030810,#0a1628,#030810);
+  border-top:1px solid rgba(14,165,233,.08);border-bottom:1px solid rgba(14,165,233,.08);
+  padding:10px 0;overflow:hidden;
+}
+.marquee-track{display:inline-flex;animation:ticker 22s linear infinite;white-space:nowrap;}
+.marquee-track:hover{animation-play-state:paused;}
+.marquee-item{color:rgba(255,255,255,.5);font-weight:600;font-size:12px;margin-right:42px;white-space:nowrap;display:inline-flex;align-items:center;gap:8px;}
+
+/* ═══════════════════════════════════════════
+   SERVICES — compact grid
+═══════════════════════════════════════════ */
+#services{padding:52px 20px;background:#080808;}
+.section-label{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(14,165,233,.07);color:#38bdf8;
+  border:1px solid rgba(14,165,233,.18);padding:4px 13px;
+  border-radius:100px;font-size:11px;font-weight:700;letter-spacing:.07em;
+  text-transform:uppercase;margin-bottom:12px;
+}
+.section-center{text-align:center;margin-bottom:32px;}
+.section-h2{font-family:'Syne',sans-serif;font-size:clamp(22px,4vw,38px);font-weight:800;color:#fff;}
+.section-divider{width:52px;height:3px;background:linear-gradient(90deg,#0ea5e9,#0284c7);border-radius:2px;margin:12px auto 0;}
+
+.services-compact-grid{
+  max-width:1100px;margin:0 auto;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+}
+@media(max-width:900px){.services-compact-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:600px){.services-compact-grid{grid-template-columns:repeat(2,1fr);gap:7px;}}
+.svc-compact{
+  background:#111;border:1px solid rgba(255,255,255,.06);border-radius:12px;
+  padding:14px 12px;text-align:center;cursor:default;
+  transition:transform .28s cubic-bezier(.22,1,.36,1),box-shadow .28s,border-color .28s;
+}
+.svc-compact:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(14,165,233,.18);border-color:rgba(14,165,233,.28);}
+.svc-compact:hover .svc-icon-box{background:linear-gradient(135deg,#0ea5e9,#0284c7);transform:rotate(8deg) scale(1.1);}
+.svc-icon-box{
+  width:36px;height:36px;border-radius:10px;background:rgba(14,165,233,.08);
+  display:flex;align-items:center;justify-content:center;margin:0 auto 9px;
+  transition:background .28s,transform .28s cubic-bezier(.34,1.56,.64,1);
+}
+.svc-title{font-size:11px;font-weight:700;color:#fff;margin-bottom:3px;line-height:1.3;}
+.svc-desc{font-size:10px;color:#64748b;line-height:1.5;}
+.services-cta{text-align:center;margin-top:24px;}
+
+/* ═══════════════════════════════════════════
+   PROJECTS CAROUSEL — auto-sliding
+═══════════════════════════════════════════ */
+#projects{padding:64px 0;background:#050505;overflow:hidden;}
+.projects-inner{max-width:1140px;margin:0 auto;padding:0 20px;}
+
+.carousel-outer{position:relative;width:100%;overflow:hidden;padding:20px 0 40px;}
+.carousel-track-wrap{overflow:hidden;position:relative;}
+.carousel-track{
+  display:flex;
+  gap:24px;
+  transition:transform .6s cubic-bezier(.22,1,.36,1);
+  will-change:transform;
+}
+
+.proj-carousel-card{
+  flex:0 0 calc(70% - 12px);
+  max-width:520px;
+  background:#0d0d0d;
+  border-radius:20px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.06);
+  transition:border-color .3s,box-shadow .3s,transform .3s;
+  cursor:pointer;
+}
+@media(max-width:768px){
+  .proj-carousel-card{flex:0 0 calc(88% - 12px);}
+}
+.proj-carousel-card.active-card{
+  border-color:rgba(14,165,233,.3);
+  box-shadow:0 20px 60px rgba(14,165,233,.15);
+}
+.proj-carousel-img{
+  width:100%;
+  aspect-ratio:16/9;
+  object-fit:cover;
+  display:block;
+  transition:transform .5s cubic-bezier(.22,1,.36,1);
+}
+.proj-carousel-card:hover .proj-carousel-img{transform:scale(1.04);}
+.proj-carousel-body{padding:20px 24px 24px;}
+.proj-carousel-tag{
+  display:inline-block;padding:3px 10px;border-radius:100px;font-size:10px;font-weight:700;
+  letter-spacing:.07em;text-transform:uppercase;margin-bottom:8px;
+}
+.tag-offroad{background:rgba(245,158,11,.12);color:#f59e0b;border:1px solid rgba(245,158,11,.2);}
+.tag-facelift{background:rgba(14,165,233,.1);color:#38bdf8;border:1px solid rgba(14,165,233,.2);}
+.tag-ceramic{background:rgba(139,92,246,.1);color:#a78bfa;border:1px solid rgba(139,92,246,.2);}
+.tag-service{background:rgba(34,197,94,.1);color:#4ade80;border:1px solid rgba(34,197,94,.2);}
+.proj-carousel-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#fff;margin-bottom:6px;}
+.proj-carousel-desc{font-size:12px;color:rgba(255,255,255,.38);line-height:1.65;}
+
+.carousel-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:8px;}
+.carousel-btn{
+  width:44px;height:44px;border-radius:50%;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .25s;
+}
+.carousel-btn:hover{background:rgba(14,165,233,.15);border-color:rgba(14,165,233,.4);}
+.carousel-dots{display:flex;gap:6px;align-items:center;}
+.carousel-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.15);border:none;cursor:pointer;transition:all .3s;padding:0;}
+.carousel-dot.active{background:#0ea5e9;width:22px;border-radius:4px;}
+
+/* ═══════════════════════════════════════════
+   INSTAGRAM VIDEOS — small cards, single row, auto-sliding
+═══════════════════════════════════════════ */
+#social-videos{padding:64px 20px;background:#080808;}
+
+/* Sliding row container */
+.videos-slider-outer{
+  position:relative;
+  overflow:hidden;
+  width:100%;
+  max-width:1100px;
+  margin:0 auto;
+}
+.videos-slider-track{
+  display:flex;
+  gap:14px;
+  transition:transform .6s cubic-bezier(.22,1,.36,1);
+  will-change:transform;
+}
+/* CHANGE: small video cards */
+.video-card{
+  flex:0 0 200px;
+  background:#0d0d0d;border-radius:14px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.06);
+  transition:transform .3s cubic-bezier(.22,1,.36,1),box-shadow .3s,border-color .3s;
+}
+.video-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(14,165,233,.15);border-color:rgba(14,165,233,.2);}
+.video-embed-wrap{
+  position:relative;width:100%;
+  padding-bottom:177.77%;
+  overflow:hidden;
+  background:#000;
+}
+.video-embed-wrap iframe{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  border:0;display:block;
+}
+.video-card-label{
+  padding:10px 12px;
+  font-size:10px;font-weight:600;
+  color:rgba(255,255,255,.45);
+  border-top:1px solid rgba(255,255,255,.05);
+  line-height:1.4;
+}
+
+/* Video slider nav */
+.videos-nav{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:18px;}
+.videos-nav-btn{
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .25s;
+}
+.videos-nav-btn:hover{background:rgba(14,165,233,.15);border-color:rgba(14,165,233,.4);}
+.videos-dots{display:flex;gap:5px;align-items:center;}
+.videos-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.15);border:none;cursor:pointer;transition:all .3s;padding:0;}
+.videos-dot.active{background:#0ea5e9;width:18px;border-radius:3px;}
+
+/* ═══════════════════════════════════════════
+   SOCIAL FOLLOW SECTION
+═══════════════════════════════════════════ */
+#follow-section{
+  padding:56px 20px;
+  background:linear-gradient(180deg,#050505,#000);
+  text-align:center;position:relative;overflow:hidden;
+}
+.sp-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:300px;border-radius:50%;background:radial-gradient(ellipse,rgba(14,165,233,.05),transparent 70%);pointer-events:none;}
+.sp-inner{max-width:680px;margin:0 auto;position:relative;z-index:1;}
+.sp-h2{font-family:'Syne',sans-serif;font-size:clamp(22px,4vw,38px);font-weight:800;color:#fff;margin-bottom:10px;}
+.sp-p{color:rgba(255,255,255,.35);font-size:14px;line-height:1.75;margin-bottom:36px;}
+.sp-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.sp-btn{
+  display:inline-flex;align-items:center;gap:12px;
+  border-radius:14px;padding:16px 28px;font-weight:700;font-size:14px;
+  border:none;cursor:pointer;font-family:inherit;
+  transition:all .3s cubic-bezier(.22,1,.36,1);text-decoration:none;
+}
+.sp-btn-ig{background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:white;box-shadow:0 8px 32px rgba(220,39,67,.4);min-width:200px;justify-content:center;}
+.sp-btn-ig:hover{transform:translateY(-4px) scale(1.03);box-shadow:0 16px 48px rgba(220,39,67,.6);}
+.sp-btn-tt{background:linear-gradient(135deg,#111,#1a1a2e);color:white;border:1.5px solid rgba(255,255,255,.1);box-shadow:0 8px 32px rgba(0,0,0,.5);min-width:200px;justify-content:center;}
+.sp-btn-tt:hover{transform:translateY(-4px) scale(1.03);box-shadow:0 16px 48px rgba(105,201,208,.3);border-color:rgba(105,201,208,.4);}
+.sp-note{margin-top:20px;font-size:12px;color:rgba(255,255,255,.2);}
+
+/* ═══════════════════════════════════════════
+   ABOUT (removed why choose us, kept info card)
+═══════════════════════════════════════════ */
+#about{padding:64px 20px;background:#0a0a0a;}
+.about-grid{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;}
+@media(max-width:768px){.about-grid{grid-template-columns:1fr;gap:28px;}}
+.about-card{background:linear-gradient(145deg,#0a0a0a,#0d1520);border-radius:24px;padding:36px;color:white;box-shadow:0 20px 60px rgba(0,0,0,.6);position:relative;overflow:hidden;border:1px solid rgba(14,165,233,.1);}
+.about-logo{display:flex;justify-content:center;margin-bottom:22px;}
+.about-logo img{height:50px;width:auto;filter:brightness(0) invert(1);opacity:.7;}
+.about-orb-1{position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(14,165,233,.12),transparent 70%);animation:float 6s ease-in-out infinite;pointer-events:none;}
+.about-orb-2{position:absolute;bottom:-40px;left:-40px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(56,189,248,.06),transparent 70%);animation:floatR 8s ease-in-out infinite;pointer-events:none;}
+.about-time-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:24px;}
+.about-time-card{background:rgba(255,255,255,.04);border-radius:13px;padding:14px 16px;border:1px solid rgba(56,189,248,.08);transition:background .25s,transform .25s;}
+.about-time-card:hover{background:rgba(14,165,233,.1);transform:translateY(-2px);}
+.about-info-item{display:flex;align-items:center;gap:11px;transition:transform .2s;padding:2px 0;}
+.about-info-item:hover{transform:translateX(4px);}
+
+/* ═══════════════════════════════════════════
+   TESTIMONIALS
+═══════════════════════════════════════════ */
+#testimonials{background:#080808;padding:60px 20px;}
+.testi-inner{max-width:700px;margin:0 auto;}
+.testi-slide{display:none;}
+.testi-slide.active{display:block;animation:fadeInUp .5s cubic-bezier(.22,1,.36,1);}
+.testi-card{background:#0d0d0d;border-radius:16px;border:1px solid rgba(255,255,255,.06);box-shadow:0 2px 20px rgba(0,0,0,.3);padding:30px 32px;transition:transform .28s,box-shadow .28s;}
+.testi-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(14,165,233,.1);}
+.testi-stars{display:flex;gap:3px;margin-bottom:14px;}
+.testi-star{animation:wiggle 1.5s ease-in-out infinite;}
+.testi-text{font-size:clamp(13px,1.8vw,15px);color:rgba(255,255,255,.6);line-height:1.8;margin-bottom:20px;font-style:italic;}
+.testi-author{display:flex;align-items:center;gap:12px;}
+.testi-avatar{width:40px;height:40px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,#0ea5e9,#0284c7);display:flex;align-items:center;justify-content:center;}
+.testi-name{font-weight:700;font-size:13px;color:#fff;}
+.testi-role{font-size:11px;color:#0ea5e9;}
+.testi-dots{display:flex;justify-content:center;gap:8px;margin-top:20px;}
+.testi-dot{height:8px;border-radius:4px;border:none;cursor:pointer;transition:all .3s cubic-bezier(.22,1,.36,1);background:rgba(255,255,255,.12);width:8px;padding:0;}
+.testi-dot.active{background:#0ea5e9;width:28px;}
+
+/* ═══════════════════════════════════════════
+   CONTACT
+═══════════════════════════════════════════ */
+#contact{padding:64px 20px;background:#0a0a0a;}
+.contact-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;}
+@media(max-width:768px){.contact-grid{grid-template-columns:1fr;gap:24px;}}
+.contact-info-card{background:#111;border-radius:16px;border:1px solid rgba(255,255,255,.06);box-shadow:0 2px 20px rgba(0,0,0,.3);padding:22px;margin-bottom:16px;}
+.info-row{display:flex;gap:12px;align-items:flex-start;padding:12px 8px;border-bottom:1px solid rgba(255,255,255,.04);border-radius:8px;transition:background .2s;}
+.info-row:hover{background:rgba(255,255,255,.03);}
+.info-row:last-child{border-bottom:none;}
+.info-icon{width:36px;height:36px;border-radius:9px;background:rgba(14,165,233,.08);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .2s;}
+.info-row:hover .info-icon{background:rgba(14,165,233,.15);transform:scale(1.08);}
+.info-label{font-size:10px;font-weight:700;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px;}
+.info-val{color:#e2e8f0;font-size:13px;font-weight:600;}
+.info-val a{color:#e2e8f0;transition:color .2s;}
+.info-val a:hover{color:#0ea5e9;}
+.map-wrap{border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.05);}
+.form-card{background:#111;border-radius:16px;border:1px solid rgba(255,255,255,.06);box-shadow:0 2px 20px rgba(0,0,0,.3);padding:28px;transition:transform .28s,box-shadow .28s;}
+.form-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(14,165,233,.1);}
+.form-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#fff;margin-bottom:3px;}
+.form-sub{color:rgba(255,255,255,.3);font-size:12px;margin-bottom:20px;}
+.form-group{margin-bottom:13px;}
+.form-label{font-size:11px;font-weight:700;color:rgba(255,255,255,.4);display:block;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;}
+.form-input{width:100%;padding:10px 13px;border:1.5px solid rgba(255,255,255,.08);border-radius:9px;font-size:14px;font-family:inherit;background:rgba(255,255,255,.04);outline:none;color:#e2e8f0;transition:border-color .22s,box-shadow .22s;}
+.form-input:focus{border-color:#0ea5e9;box-shadow:0 0 0 3px rgba(14,165,233,.1);}
+.form-input option{background:#111;color:#e2e8f0;}
+.form-success{background:rgba(22,163,74,.1);border:1px solid rgba(22,163,74,.3);border-radius:10px;padding:12px 16px;color:#4ade80;font-weight:600;font-size:13px;display:none;align-items:center;gap:8px;animation:slideInUp .3s ease;}
+.form-success.show{display:flex;}
+
+/* ═══════════════════════════════════════════
+   CTA STRIP
+═══════════════════════════════════════════ */
+.cta-section{background:linear-gradient(135deg,#030d18,#051428,#030d18);padding:50px 24px;position:relative;overflow:hidden;border-top:1px solid rgba(14,165,233,.1);border-bottom:1px solid rgba(14,165,233,.1);}
+.cta-blob-1{position:absolute;top:-80px;left:-80px;width:250px;height:250px;border-radius:50%;background:rgba(14,165,233,.06);animation:blob 8s ease-in-out infinite;pointer-events:none;}
+.cta-blob-2{position:absolute;bottom:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:rgba(14,165,233,.04);animation:blob 10s ease-in-out infinite reverse;pointer-events:none;}
+.cta-inner{max-width:640px;margin:0 auto;text-align:center;position:relative;z-index:1;}
+.cta-logo{margin-bottom:16px;}
+.cta-logo img{height:42px;width:auto;margin:0 auto;filter:brightness(0) invert(1);opacity:.4;}
+.cta-h2{font-family:'Syne',sans-serif;font-size:clamp(20px,4vw,32px);font-weight:800;color:white;margin-bottom:10px;}
+.cta-p{color:rgba(255,255,255,.45);font-size:14px;margin-bottom:26px;}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.cta-btn-white{background:white;color:#0284c7;border:none;border-radius:10px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:inherit;transition:transform .22s,box-shadow .22s;animation:glowPulse 3s ease-in-out infinite;}
+.cta-btn-white:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 10px 30px rgba(14,165,233,.3);}
+.cta-btn-whatsapp{background:linear-gradient(135deg,#25d366,#128c7e);color:white;border:none;border-radius:10px;padding:12px 24px;font-size:14px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:inherit;transition:all .22s;}
+.cta-btn-whatsapp:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,211,102,.4);}
+
+/* ═══════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════ */
+footer{background:#040404;color:rgba(255,255,255,.35);padding:44px 22px 24px;border-top:1px solid rgba(255,255,255,.05);}
+.footer-inner{max-width:1140px;margin:0 auto;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:32px;margin-bottom:32px;}
+@media(max-width:640px){.footer-grid{grid-template-columns:1fr 1fr;gap:24px;}}
+.footer-logo{display:flex;align-items:center;gap:12px;margin-bottom:14px;cursor:pointer;}
+.footer-logo img{height:36px;width:auto;filter:brightness(0) invert(1);opacity:.6;transition:opacity .25s;}
+.footer-logo:hover img{opacity:.9;}
+.footer-col-title{color:rgba(255,255,255,.6);font-weight:700;font-size:12px;margin-bottom:12px;text-transform:uppercase;letter-spacing:.08em;}
+.footer-link{font-size:12px;margin-bottom:9px;cursor:pointer;transition:color .2s,transform .2s;display:block;}
+.footer-link:hover{color:rgba(255,255,255,.7);transform:translateX(4px);}
+.footer-contact-item{display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:9px;transition:color .2s;}
+.footer-contact-item:hover{color:rgba(255,255,255,.65);}
+.footer-social{display:flex;gap:10px;margin-top:16px;}
+.footer-social-btn{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);transition:all .25s;}
+.footer-social-btn:hover{background:rgba(14,165,233,.1);border-color:rgba(14,165,233,.3);transform:scale(1.1);}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.05);padding-top:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-size:11px;}
+
+/* WhatsApp float */
+.wa-btn{position:fixed;bottom:22px;right:22px;z-index:999;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#25d366,#128c7e);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(37,211,102,.4);transition:transform .28s cubic-bezier(.34,1.56,.64,1),box-shadow .28s;}
+.wa-btn:hover{transform:scale(1.15);box-shadow:0 8px 28px rgba(37,211,102,.55);}
+
+/* Mobile helpers */
+@media(max-width:768px){
+  .hm{display:none!important;}
+  #hero{height:clamp(200px,55vw,300px);}
+  .hero-p{display:none;}
+  .hero-trust{display:none;}
+  .hero-logo-watermark{display:none;}
+}
+@media(min-width:769px){.sm-only{display:none!important;}}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ NAV ══════════════ -->
+<nav id="main-nav">
+  <div class="nav-inner">
+    <div class="nav-logo" onclick="scrollTo('video-banner')">
+      <img src="images/logo.png" alt="Fix N Go Logo" class="nav-logo-img"/>
+      <div>
+        <div class="nav-logo-name syne">FIX N GO</div>
+        <div class="nav-logo-sub">AUTO SERVICES</div>
+      </div>
+    </div>
+    <div class="nav-links hm">
+      <span class="nav-link" onclick="scrollTo('services')">Services</span>
+      <span class="nav-link" onclick="scrollTo('projects')">Projects</span>
+      <span class="nav-link" onclick="scrollTo('social-videos')">Videos</span>
+      <span class="nav-link" onclick="scrollTo('about')">About</span>
+      <span class="nav-link" onclick="scrollTo('contact')">Contact</span>
+      <a href="https://wa.me/254750001001?text=Hello%20Fix%20N%20Go!%20I%20need%20auto%20assistance." target="_blank" rel="noopener noreferrer">
+        <button class="btn-whatsapp-nav">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          WhatsApp Us
+        </button>
+      </a>
+    </div>
+    <button class="menu-btn sm-only" id="menuBtn" onclick="toggleMenu()">
+      <svg id="menuIcon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="mobile-drawer" id="mobileDrawer">
+    <div class="mobile-nav-link" onclick="scrollTo('services')">Services</div>
+    <div class="mobile-nav-link" onclick="scrollTo('projects')">Our Projects</div>
+    <div class="mobile-nav-link" onclick="scrollTo('social-videos')">Videos</div>
+    <div class="mobile-nav-link" onclick="scrollTo('about')">About</div>
+    <div class="mobile-nav-link" onclick="scrollTo('contact')">Contact</div>
+    <a href="https://wa.me/254750001001" target="_blank" rel="noopener noreferrer" style="margin-top:8px;">
+      <button class="btn-whatsapp-nav" style="width:100%;padding:12px;justify-content:center;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        WhatsApp Us
+      </button>
+    </a>
+  </div>
+</nav>
+
+<!-- ══════════════ VIDEO BANNER ══════════════ -->
+<div class="video-banner-wrap">
+  <div id="video-banner">
+    <div class="vb-bg"></div>
+    <div class="vb-scanline"></div>
+    <video class="vb-video" autoplay muted loop playsinline webkit-playsinline>
+      <source src="shopvideo.mp4" type="video/mp4"/>
+    </video>
+    <div class="vb-vignette"></div>
+  </div>
+</div>
+
+<!-- ══════════════ MARQUEE ══════════════ -->
+<div class="marquee-bar">
+  <div style="overflow:hidden;white-space:nowrap;">
+    <div class="marquee-track" id="marqueeTrack"></div>
+  </div>
+</div>
+
+<!-- ══════════════ STATS ══════════════ -->
+<section class="stats-section">
+  <div class="stats-grid">
+    <div class="stat-card reveal scale">
+      <div class="stat-orb"></div>
+      <div class="stat-num gt" data-target="12" data-suffix="+">0+</div>
+      <div class="stat-label">Years Experience</div>
+      <div class="stat-line"></div>
+    </div>
+    <div class="stat-card reveal scale" style="transition-delay:.08s">
+      <div class="stat-orb"></div>
+      <div class="stat-num gt" data-target="5000" data-suffix="+">0+</div>
+      <div class="stat-label">Vehicles Serviced</div>
+      <div class="stat-line"></div>
+    </div>
+    <div class="stat-card reveal scale" style="transition-delay:.16s">
+      <div class="stat-orb"></div>
+      <div class="stat-num gt" data-target="98" data-suffix="%">0%</div>
+      <div class="stat-label">Satisfaction Rate</div>
+      <div class="stat-line"></div>
+    </div>
+
+</section>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section id="hero">
+  <img src="images/bannerimage.jpeg" alt="Fix N Go Workshop" class="hero-bg-img"/>
+  <div class="hero-overlay"></div>
+  <div id="particles-container"></div>
+  <div class="hero-logo-watermark"><img src="images/logo.png" alt=""/></div>
+  <div class="hero-content">
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <div class="hero-dot"></div>
+        <span class="hero-badge-text">Nyali / Ziwani Road, Mombasa</span>
+      </div>
+      <h1 class="hero-h1 syne">Drive Better. <span class="gt">Service Smarter.</span></h1>
+      <p class="hero-p">Mombasa's trusted automotive workshop — expert technicians, advanced diagnostics, and transparent pricing.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" style="font-size:13px;padding:11px 24px;" onclick="scrollTo('contact')">Book a Service</button>
+        <a href="https://wa.me/254750001001?text=Hello%20Fix%20N%20Go!%20I%20need%20auto%20assistance." target="_blank" rel="noopener noreferrer">
+          <button style="background:linear-gradient(135deg,#25d366,#128c7e);color:white;border:none;border-radius:9px;padding:11px 20px;font-weight:600;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;font-family:inherit;transition:all .22s;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            WhatsApp Us
+          </button>
+        </a>
+        <a href="tel:+254750001001" style="display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,.55);font-size:13px;font-weight:500;padding:11px 6px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          +254 750 001001
+        </a>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Warranty Backed</div>
+        <div class="trust-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Same-Day Service</div>
+        <div class="trust-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>4.9 Rated</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ SERVICES ══════════════ -->
+<section id="services">
+  <div style="max-width:1140px;margin:0 auto;">
+    <div class="section-center reveal">
+      <div class="section-label">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        Our Services
+      </div>
+      <h2 class="section-h2 syne">Complete Auto <span class="gt">Care Solutions</span></h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="services-compact-grid" id="servicesGrid"></div>
+    <div class="services-cta reveal" style="transition-delay:.12s">
+      <a href="https://wa.me/254750001001?text=Hello%20Fix%20N%20Go!%20I%20want%20to%20book%20a%20service." target="_blank" rel="noopener noreferrer">
+        <button class="btn-primary">Book Any Service via WhatsApp</button>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ OUR PROJECTS CAROUSEL (auto-sliding) ══════════════ -->
+<section id="projects">
+  <div class="projects-inner">
+    <div class="section-center reveal">
+      <div class="section-label">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Portfolio
+      </div>
+      <h2 class="section-h2 syne">Our <span class="gt">Projects</span></h2>
+      <p style="color:rgba(255,255,255,.3);font-size:14px;margin-top:8px;">Swipe through our work.</p>
+      <div class="section-divider"></div>
+    </div>
+    <div class="carousel-outer">
+      <div class="carousel-track-wrap">
+        <div class="carousel-track" id="projCarouselTrack"></div>
+      </div>
+      <div class="carousel-nav" style="margin-top:24px;">
+        <button class="carousel-btn" id="projPrev" onclick="moveCarousel(-1)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="carousel-dots" id="projDots"></div>
+        <button class="carousel-btn" id="projNext" onclick="moveCarousel(1)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ INSTAGRAM VIDEOS (small cards, auto-sliding row) ══════════════ -->
+<section id="social-videos">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="section-center reveal">
+      <div class="section-label">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        From Our Instagram
+      </div>
+      <h2 class="section-h2 syne">See Our <span class="gt">Work in Action</span></h2>
+      <p style="color:rgba(255,255,255,.3);font-size:14px;margin-top:8px;">Real builds. Real results.</p>
+      <div class="section-divider"></div>
+    </div>
+
+    <div class="videos-slider-outer reveal">
+      <div class="videos-slider-track" id="videosTrack">
+        <div class="video-card">
+          <div class="video-embed-wrap">
+            <iframe src="https://www.instagram.com/p/Cydqg6DIS4Q/embed/" scrolling="no" allowtransparency="true" allowfullscreen="true"></iframe>
+          </div>
+          <div class="video-card-label">Toyota Probox Offroad Build</div>
+        </div>
+        <div class="video-card">
+          <div class="video-embed-wrap">
+            <iframe src="https://www.instagram.com/p/C8FZRnto_mh/embed/" scrolling="no" allowtransparency="true" allowfullscreen="true"></iframe>
+          </div>
+          <div class="video-card-label">Certified Revify Ceramic Coating</div>
+        </div>
+        <div class="video-card">
+          <div class="video-embed-wrap">
+            <iframe src="https://www.instagram.com/p/DSQbOvNDG4k/embed/" scrolling="no" allowtransparency="true" allowfullscreen="true"></iframe>
+          </div>
+          <div class="video-card-label">LC300 Full Offroad Parts Installed</div>
+        </div>
+        <div class="video-card">
+          <div class="video-embed-wrap">
+            <iframe src="https://www.instagram.com/p/DQ91E1dDBr4/embed/" scrolling="no" allowtransparency="true" allowfullscreen="true"></iframe>
+          </div>
+          <div class="video-card-label">E250 — General Check Up & Service</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="videos-nav">
+      <button class="videos-nav-btn" onclick="moveVideos(-1)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="videos-dots" id="videosDots"></div>
+      <button class="videos-nav-btn" onclick="moveVideos(1)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FOLLOW US ══════════════ -->
+<section id="follow-section">
+  <div class="sp-glow"></div>
+  <div class="sp-inner">
+    <div class="section-label" style="margin-bottom:16px;">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+      Follow Us
+    </div>
+    <h2 class="sp-h2 reveal">See Every Build. <span class="gt">Follow Our Work.</span></h2>
+    <p class="sp-p reveal">We post every project — offroad builds, ceramic coatings, facelifts, G-Wagons, Land Cruisers, and everything in between. New content every week.</p>
+    <div class="sp-btns reveal">
+      <a href="https://www.instagram.com/fixandgo_autoservices/" target="_blank" rel="noopener noreferrer" class="sp-btn sp-btn-ig">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        <div>
+          <div style="font-size:14px;">Instagram</div>
+          <div style="font-size:11px;font-weight:400;opacity:.7;">@fixandgo_autoservices</div>
+        </div>
+      </a>
+      <a href="https://www.tiktok.com/@fixandgo_autoservices" target="_blank" rel="noopener noreferrer" class="sp-btn sp-btn-tt">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V9.13a8.16 8.16 0 0 0 4.77 1.52V7.21a4.85 4.85 0 0 1-1-.52z"/></svg>
+        <div>
+          <div style="font-size:14px;">TikTok</div>
+          <div style="font-size:11px;font-weight:400;opacity:.7;">@fixandgo_autoservices</div>
+        </div>
+      </a>
+    </div>
+    <p class="sp-note">New builds and transformations posted weekly</p>
+  </div>
+</section>
+
+<!-- ══════════════ ABOUT (no why choose us) ══════════════ -->
+<section id="about">
+  <div class="about-grid">
+    <div class="reveal left">
+      <div class="section-label">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        About Us
+      </div>
+      <h2 class="syne" style="font-size:clamp(22px,3.5vw,36px);font-weight:800;color:#fff;margin-bottom:14px;">
+        Precision Engineering.<br/><span class="gt">Honest Service.</span>
+      </h2>
+      <p style="color:rgba(255,255,255,.4);font-size:14px;line-height:1.85;margin-bottom:22px;">
+        Located on Nyali / Ziwani Road, we blend deep automotive expertise with modern diagnostics. Dubai-trained technicians. Every job done right the first time — no shortcuts, no surprise bills.
+      </p>
+      <p style="color:rgba(255,255,255,.4);font-size:14px;line-height:1.85;margin-bottom:22px;">
+        From quick oil changes to full offroad builds and ceramic coatings, Fix N Go is Mombasa's complete automotive partner. Over 5,000 vehicles serviced since 2012.
+      </p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn-primary" onclick="scrollTo('contact')">Book a Service</button>
+        <a href="https://wa.me/254750001001?text=Hello%20Fix%20N%20Go!%20I%20have%20a%20question." target="_blank" rel="noopener noreferrer">
+          <button style="background:linear-gradient(135deg,#25d366,#128c7e);color:white;border:none;border-radius:9px;padding:9px 20px;font-weight:600;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;font-family:inherit;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            WhatsApp Us
+          </button>
+        </a>
+      </div>
+    </div>
+    <div class="reveal right" style="transition-delay:.1s">
+      <div class="about-card">
+        <div class="about-orb-1"></div>
+        <div class="about-orb-2"></div>
+        <div class="about-logo"><img src="images/logo.png" alt="Fix N Go Logo"/></div>
+        <div style="margin-bottom:22px;position:relative;text-align:center;">
+          <div style="font-size:11px;color:#38bdf8;font-weight:700;letter-spacing:.09em;text-transform:uppercase;margin-bottom:6px;">Established 2012</div>
+          <div class="syne" style="font-size:20px;font-weight:800;line-height:1.2;">Mombasa's Trusted Auto Partner</div>
+        </div>
+        <div class="about-time-grid">
+          <div class="about-time-card">
+            <div style="font-size:14px;font-weight:700;color:#38bdf8;">Mon - Sat</div>
+            <div style="font-size:11px;color:rgba(255,255,255,.3);margin-top:2px;">Working Days</div>
+          </div>
+          <div class="about-time-card">
+            <div style="font-size:14px;font-weight:700;color:#38bdf8;">8AM - 5PM</div>
+            <div style="font-size:11px;color:rgba(255,255,255,.3);margin-top:2px;">Open Hours</div>
+          </div>
+        </div>
+        <div style="border-top:1px solid rgba(255,255,255,.06);padding-top:18px;display:flex;flex-direction:column;gap:12px;">
+          <div class="about-info-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span style="font-size:13px;color:rgba(255,255,255,.45);">Nyali / Ziwani Road, Mombasa</span></div>
+          <div class="about-info-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span style="font-size:13px;color:rgba(255,255,255,.45);">+254 750 001001</span></div>
+          <div class="about-info-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span style="font-size:13px;color:rgba(255,255,255,.45);">fixandgoautoservices@gmail.com</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ TESTIMONIALS ══════════════ -->
+<section id="testimonials">
+  <div class="testi-inner">
+    <div class="section-center reveal">
+      <div class="section-label">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Customer Stories
+      </div>
+      <h2 class="section-h2 syne">What Our <span class="gt">Clients Say</span></h2>
+    </div>
+    <div id="testiContainer"></div>
+    <div class="testi-dots" id="testiDots"></div>
+  </div>
+</section>
+
+<!-- ══════════════ CONTACT ══════════════ -->
+<section id="contact">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="section-center reveal">
+      <div class="section-label">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Get In Touch
+      </div>
+      <h2 class="section-h2 syne">Book a <span class="gt">Service Today</span></h2>
+      <p style="color:rgba(255,255,255,.3);font-size:14px;margin-top:8px;">We will confirm your booking within 30 minutes.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="reveal left">
+        <div class="contact-info-card">
+          <div class="info-row">
+            <div class="info-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+            <div><div class="info-label">Phone</div><div class="info-val"><a href="tel:+254750001001">+254 750 001001</a></div></div>
+          </div>
+          <div class="info-row">
+            <div class="info-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#25d366" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
+            <div><div class="info-label">WhatsApp</div><div class="info-val"><a href="https://wa.me/254750001001" target="_blank" rel="noopener noreferrer">+254 750 001001</a></div></div>
+          </div>
+          <div class="info-row">
+            <div class="info-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+            <div><div class="info-label">Email</div><div class="info-val"><a href="mailto:fixandgoautoservices@gmail.com">fixandgoautoservices@gmail.com</a></div></div>
+          </div>
+          <div class="info-row">
+            <div class="info-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+            <div><div class="info-label">Address</div><div class="info-val">Nyali / Ziwani Road, Mombasa</div></div>
+          </div>
+          <div class="info-row">
+            <div class="info-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <div><div class="info-label">Hours</div><div class="info-val">Mon-Sat: 8:00 AM - 5:00 PM</div></div>
+          </div>
+          <div style="padding:12px 8px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <a href="https://www.instagram.com/fixandgo_autoservices/" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:7px;background:linear-gradient(135deg,rgba(240,148,51,.15),rgba(188,24,136,.15));border:1px solid rgba(220,39,67,.2);border-radius:9px;padding:8px 14px;font-size:12px;font-weight:600;color:rgba(255,255,255,.6);transition:all .22s;text-decoration:none;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,.6)'">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+              Instagram
+            </a>
+            <a href="https://www.tiktok.com/@fixandgo_autoservices" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:9px;padding:8px 14px;font-size:12px;font-weight:600;color:rgba(255,255,255,.6);transition:all .22s;text-decoration:none;" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,.6)'">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V9.13a8.16 8.16 0 0 0 4.77 1.52V7.21a4.85 4.85 0 0 1-1-.52z"/></svg>
+              TikTok
+            </a>
+          </div>
+        </div>
+        <div class="map-wrap">
+          <iframe title="Fix N Go Location"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3981.3!2d39.6772!3d-4.0143!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNMKwMDAnNTEuNSJTIDM5wrA0MCczOC4wIkU!5e0!3m2!1sen!2ske!4v1"
+            width="100%" height="200" style="border:0;display:block;" allowfullscreen loading="lazy"></iframe>
+        </div>
+      </div>
+      <div class="reveal right" style="transition-delay:.1s">
+        <div class="form-card">
+          <div class="form-title syne">Request a Service</div>
+          <div class="form-sub">Fill in your details and we will be in touch — or WhatsApp us directly.</div>
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input type="text" class="form-input" id="formName" placeholder="e.g. John Kamau"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone</label>
+            <input type="tel" class="form-input" id="formPhone" placeholder="+254 7XX XXX XXX"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-input" id="formEmail" placeholder="your@email.com"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Service</label>
+            <select class="form-input" id="formService">
+              <option value="">Select a service...</option>
+              <option>Self-Healing Ceramic Coating</option>
+              <option>Full Vehicle Paint Restore</option>
+              <option>Offroad Build / Lift Kit</option>
+              <option>Facelift / Body Kit</option>
+              <option>Battery Replacement</option>
+              <option>Tyre Services</option>
+              <option>Vehicle Diagnostics</option>
+              <option>General Servicing</option>
+              <option>Oil Changes</option>
+              <option>Brake Repair</option>
+              <option>Suspension Repair</option>
+              <option>Auto Electrical</option>
+              <option>Fleet Maintenance</option>
+              <option>Emergency Assistance</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Notes</label>
+            <textarea class="form-input" id="formMessage" rows="3" placeholder="Describe the issue or what you would like done..." style="resize:vertical;"></textarea>
+          </div>
+          <div class="form-success" id="formSuccess">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Booking received! We will call you shortly.
+          </div>
+          <div style="display:flex;gap:10px;margin-top:4px;flex-wrap:wrap;">
+            <button class="btn-primary" style="flex:1;min-width:140px;padding:13px;font-size:13px;" onclick="submitForm()">Submit Booking</button>
+            <a href="https://wa.me/254750001001?text=Hello%20Fix%20N%20Go!%20I%20want%20to%20book%20a%20service." target="_blank" rel="noopener noreferrer" style="flex:1;min-width:140px;">
+              <button style="width:100%;background:linear-gradient(135deg,#25d366,#128c7e);color:white;border:none;border-radius:9px;padding:13px;font-weight:700;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px;font-family:inherit;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                WhatsApp Us
+              </button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ CTA ══════════════ -->
+<section class="cta-section">
+  <div class="cta-blob-1"></div>
+  <div class="cta-blob-2"></div>
+  <div class="cta-inner reveal">
+    <div class="cta-logo"><img src="images/logo.png" alt="Fix N Go"/></div>
+    <h2 class="cta-h2 syne">Need Emergency Roadside Help?</h2>
+    <p class="cta-p">Rapid-response auto assistance across Mombasa — call or WhatsApp us now.</p>
+    <div class="cta-btns">
+      <a href="tel:+254750001001"><button class="cta-btn-white"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>+254 750 001001</button></a>
+      <a href="https://wa.me/254750001001?text=Hello%20Fix%20N%20Go!%20I%20need%20emergency%20assistance." target="_blank" rel="noopener noreferrer"><button class="cta-btn-whatsapp"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>WhatsApp Us</button></a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo" onclick="scrollTo('video-banner')">
+          <img src="images/logo.png" alt="Fix N Go Logo"/>
+          <div>
+            <div class="syne" style="font-size:14px;font-weight:800;color:rgba(255,255,255,.8);">FIX N GO</div>
+            <div style="font-size:9px;color:#38bdf8;letter-spacing:.12em;text-transform:uppercase;">AUTO SERVICES</div>
+          </div>
+        </div>
+        <p style="font-size:12px;line-height:1.85;max-width:230px;">Mombasa's premium automotive service centre. Expert care for every vehicle.</p>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/fixandgo_autoservices/" target="_blank" rel="noopener noreferrer" class="footer-social-btn" title="Instagram">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="https://www.tiktok.com/@fixandgo_autoservices" target="_blank" rel="noopener noreferrer" class="footer-social-btn" title="TikTok">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="rgba(255,255,255,.5)"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V9.13a8.16 8.16 0 0 0 4.77 1.52V7.21a4.85 4.85 0 0 1-1-.52z"/></svg>
+          </a>
+          <a href="https://wa.me/254750001001" target="_blank" rel="noopener noreferrer" class="footer-social-btn" title="WhatsApp">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Navigation</div>
+        <span class="footer-link" onclick="scrollTo('services')">Services</span>
+        <span class="footer-link" onclick="scrollTo('projects')">Our Projects</span>
+        <span class="footer-link" onclick="scrollTo('social-videos')">Videos</span>
+        <span class="footer-link" onclick="scrollTo('about')">About</span>
+        <span class="footer-link" onclick="scrollTo('contact')">Contact</span>
+      </div>
+      <div>
+        <div class="footer-col-title">Contact</div>
+        <div class="footer-contact-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>+254 750 001001</div>
+        <div class="footer-contact-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#25d366" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg><a href="https://wa.me/254750001001" target="_blank" rel="noopener noreferrer" style="color:rgba(255,255,255,.35);">WhatsApp Us</a></div>
+        <div class="footer-contact-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><a href="mailto:fixandgoautoservices@gmail.com" style="color:rgba(255,255,255,.35);font-size:11px;">fixandgoautoservices@gmail.com</a></div>
+        <div class="footer-contact-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Nyali / Ziwani Rd, Mombasa</div>
+        <div class="footer-contact-item"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Mon-Sat: 8AM-5PM</div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>2026 Fix N Go Auto Services. All rights reserved.</div>
+      <div>Nyali / Ziwani Road, Mombasa, Kenya</div>
+    </div>
+  </div>
+</footer>
+
+<!-- WhatsApp Float -->
+<a href="https://wa.me/254750001001?text=Hello%20Fix%20N%20Go!%20I%20need%20auto%20assistance." target="_blank" rel="noopener noreferrer" class="wa-btn" title="Chat on WhatsApp">
+  <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+</a>
+
+<!-- ══════════════ JS ══════════════ -->
+<script>
+/* ── Data ── */
+const SERVICES=[
+  {icon:'battery', title:'Battery Replacement',    desc:'Same-day testing and fitting of premium batteries.'},
+  {icon:'tyre',    title:'Tyre Services',           desc:'Supply, fitting, balancing and alignment.'},
+  {icon:'diag',    title:'Vehicle Diagnostics',     desc:'OBD-II scanning for accurate fault detection.'},
+  {icon:'wrench',  title:'General Servicing',       desc:'Full scheduled maintenance to manufacturer specs.'},
+  {icon:'oil',     title:'Oil Changes',             desc:'Synthetic and conventional oils with filter swap.'},
+  {icon:'brake',   title:'Brake Repair',            desc:'Pads, discs, callipers and brake fluid services.'},
+  {icon:'susp',    title:'Suspension Repair',       desc:'Shocks, springs, bushings and steering geometry.'},
+  {icon:'zap',     title:'Auto Electrical',         desc:'Wiring, alternators, starters and sensors.'},
+  {icon:'ceramic', title:'Ceramic Coating',         desc:'Self-healing 9H Revify ceramic with UV protection.'},
+  {icon:'paint',   title:'Paint Correction',        desc:'Full paint correction, respray and colour matching.'},
+  {icon:'offroad', title:'Offroad Builds',          desc:'Lift kits, snorkels, rock sliders and more.'},
+  {icon:'truck',   title:'Fleet Maintenance',       desc:'Managed uptime programs for commercial fleets.'},
+];
+
+const ICONS={
+  battery:'<rect x="2" y="7" width="18" height="10" rx="2"/><path d="M22 11v2"/><path d="M6 11h4M8 9v4"/>',
+  tyre:   '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/>',
+  diag:   '<path d="M9 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9"/><polyline points="9 3 9 9 15 9"/><path d="M8 13h4M8 17h8"/>',
+  wrench: '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>',
+  oil:    '<path d="M19 2l-6 6h-4l-6 6 6 6 6-6v-4l6-6-2-2z"/>',
+  brake:  '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>',
+  susp:   '<path d="M12 2v6M12 16v6M5 5l3 3M16 16l3 3M2 12h6M16 12h6M5 19l3-3M16 8l3-3"/>',
+  zap:    '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
+  ceramic:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>',
+  paint:  '<path d="M2 13.5V21h7.5"/><path d="M2 13.5L15 2l7 7L9.5 21"/><path d="M15 9l-4 4"/>',
+  offroad:'<path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v5a2 2 0 0 1-2 2h-2"/><circle cx="9" cy="17" r="2"/><circle cx="19" cy="17" r="2"/>',
+  truck:  '<rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>',
+};
+
+const TESTIMONIALS=[
+  {name:'David Mwangi',  role:'Fleet Manager, Mombasa Logistics', text:'Fix N Go has managed our fleet of 18 vehicles for 3 years. Reliable, professional, always on time.',stars:5},
+  {name:'Amina Hassan',  role:'Car Owner, Nyali',                  text:'Battery replaced in 30 minutes. Super professional and fair pricing. Will not go anywhere else.',stars:5},
+  {name:'James Kariuki', role:'Business Owner, Mombasa CBD',       text:'Found an issue two other garages missed. Transparent pricing and great communication.',stars:5},
+  {name:'Grace Wanjiku', role:'Land Cruiser Owner',                text:'The ceramic coating on my Prado is absolutely stunning. Self-healing is real — watched a light scratch disappear!',stars:5},
+  {name:'Ali Baraka',    role:'G-Wagon Owner, Nyali',             text:'They did a full offroad conversion on my LC300. Lift kit, snorkel, spotlights — flawless execution.',stars:5},
+];
+
+const PROJECTS=[
+  {tag:'facelift',tagLabel:'Facelift',title:'Full Vehicle Facelift',desc:'Body kit fitment, custom grille, colour-matched trim and paintwork correction.',img:'images/proj_facelift.jpeg'},
+  {tag:'ceramic', tagLabel:'Full Car Wash',title:'Full Interior And Exterior Detial',desc:'Multi-stage machine polish, paint decontamination and Revify self-healing ceramic coat.',img:'images/proj_paint.jpeg'},
+  {tag:'offroad', tagLabel:'Full 4x4 Build',title:'Full 4x4 Offroad Build',desc:'Lift kit, Old Man Emu suspension, ARB snorkel, rock sliders and LED light bar.',img:'images/proj_offroad.jpeg'},
+  {tag:'service', tagLabel:'Ceramic Coating',title:'Ceramic Coating',desc:'Self Healing Ceramic Coating',img:'images/proj_service.jpeg'},
+];
+
+/* ── Helpers ── */
+function svgIcon(paths,size=18,color='#0ea5e9',sw=1.7){return`<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`;}
+function scrollTo(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth'});closeMobileMenu();}
+function toggleMenu(){const d=document.getElementById('mobileDrawer'),b=document.getElementById('menuBtn'),o=d.classList.toggle('open');b.classList.toggle('open',o);document.getElementById('menuIcon').innerHTML=o?'<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>':'<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>';}
+function closeMobileMenu(){document.getElementById('mobileDrawer').classList.remove('open');document.getElementById('menuBtn').classList.remove('open');document.getElementById('menuIcon').innerHTML='<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>';}
+
+/* ── Particles ── */
+(function(){const c=document.getElementById('particles-container');for(let i=0;i<18;i++){const p=document.createElement('div');p.style.cssText=`position:absolute;border-radius:50%;background:rgba(56,189,248,.4);pointer-events:none;left:${Math.random()*100}%;top:${Math.random()*100}%;width:${Math.random()*3+1}px;height:${Math.random()*3+1}px;animation:particleFloat ${Math.random()*8+6}s ${Math.random()*5}s ease-in-out infinite;`;c.appendChild(p);}})();
+
+/* ── Marquee ── */
+(function(){const items=SERVICES.map(s=>`<span class="marquee-item">${svgIcon(ICONS[s.icon],12,'rgba(14,165,233,.7)',2)}&nbsp;${s.title}</span>`).join('');const t=document.getElementById('marqueeTrack');t.innerHTML=items.repeat(4);})();
+
+/* ── Services ── */
+(function(){
+  const g=document.getElementById('servicesGrid');
+  g.innerHTML=SERVICES.map((s,i)=>`
+    <div class="svc-compact reveal" style="transition-delay:${i*.04}s">
+      <div class="svc-icon-box">${svgIcon(ICONS[s.icon],17,'#0ea5e9',1.7)}</div>
+      <div class="svc-title">${s.title}</div>
+      <div class="svc-desc">${s.desc}</div>
+    </div>
+  `).join('');
+})();
+
+/* ── Testimonials ── */
+let currentTesti=0;
+(function(){
+  const c=document.getElementById('testiContainer'),d=document.getElementById('testiDots');
+  c.innerHTML=TESTIMONIALS.map((t,i)=>`
+    <div class="testi-slide${i===0?' active':''}" id="testi${i}">
+      <div class="testi-card">
+        <div class="testi-stars">${Array(t.stars).fill(`<svg class="testi-star" width="15" height="15" viewBox="0 0 24 24" fill="#f59e0b" stroke="none" style="animation-delay:${Math.random()*.3}s"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`).join('')}</div>
+        <p class="testi-text">"${t.text}"</p>
+        <div class="testi-author">
+          <div class="testi-avatar">${svgIcon('<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>',16,'white',2)}</div>
+          <div><div class="testi-name">${t.name}</div><div class="testi-role">${t.role}</div></div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  d.innerHTML=TESTIMONIALS.map((_,i)=>`<button class="testi-dot${i===0?' active':''}" id="tDot${i}" onclick="setTesti(${i})"></button>`).join('');
+})();
+function setTesti(i){document.getElementById(`testi${currentTesti}`).classList.remove('active');document.getElementById(`tDot${currentTesti}`).classList.remove('active');currentTesti=i;document.getElementById(`testi${i}`).classList.add('active');document.getElementById(`tDot${i}`).classList.add('active');}
+setInterval(()=>setTesti((currentTesti+1)%TESTIMONIALS.length),5000);
+
+/* ── Projects Carousel (auto-sliding every 3.5s) ── */
+let projIdx=0;
+let projAutoTimer=null;
+
+(function(){
+  const track=document.getElementById('projCarouselTrack');
+  const dots=document.getElementById('projDots');
+  track.innerHTML=PROJECTS.map((p,i)=>`
+    <div class="proj-carousel-card${i===0?' active-card':''}" id="pcard${i}">
+      <img class="proj-carousel-img" src="${p.img}" alt="${p.title}" loading="lazy" onerror="this.style.background='#111';this.style.height='220px';"/>
+      <div class="proj-carousel-body">
+        <span class="proj-carousel-tag tag-${p.tag}">${p.tagLabel}</span>
+        <div class="proj-carousel-title">${p.title}</div>
+        <div class="proj-carousel-desc">${p.desc}</div>
+      </div>
+    </div>
+  `).join('');
+  dots.innerHTML=PROJECTS.map((_,i)=>`<button class="carousel-dot${i===0?' active':''}" id="pdot${i}" onclick="goCarousel(${i})"></button>`).join('');
+  updateCarousel();
+  startProjAuto();
+})();
+
+function getCardWidth(){
+  const card=document.querySelector('.proj-carousel-card');
+  if(!card)return 0;
+  return card.offsetWidth+24;
+}
+function updateCarousel(){
+  const track=document.getElementById('projCarouselTrack');
+  const wrap=document.querySelector('.carousel-track-wrap');
+  const wrapW=wrap.offsetWidth;
+  const cardW=getCardWidth();
+  const offset=(wrapW/2)-(cardW/2)-(projIdx*cardW);
+  track.style.transform=`translateX(${offset}px)`;
+  PROJECTS.forEach((_,i)=>{
+    const c=document.getElementById('pcard'+i);
+    const d=document.getElementById('pdot'+i);
+    if(c)c.classList.toggle('active-card',i===projIdx);
+    if(d)d.classList.toggle('active',i===projIdx);
+  });
+}
+function moveCarousel(dir){
+  projIdx=(projIdx+dir+PROJECTS.length)%PROJECTS.length;
+  updateCarousel();
+  restartProjAuto();
+}
+function goCarousel(i){projIdx=i;updateCarousel();restartProjAuto();}
+function startProjAuto(){projAutoTimer=setInterval(()=>{projIdx=(projIdx+1)%PROJECTS.length;updateCarousel();},3500);}
+function restartProjAuto(){clearInterval(projAutoTimer);startProjAuto();}
+
+/* touch swipe on projects carousel */
+(function(){
+  const wrap=document.querySelector('.carousel-track-wrap');
+  if(!wrap)return;
+  let startX=0;
+  wrap.addEventListener('touchstart',e=>{startX=e.touches[0].clientX;},{passive:true});
+  wrap.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-startX;if(Math.abs(dx)>40)moveCarousel(dx<0?1:-1);},{passive:true});
+})();
+window.addEventListener('resize',updateCarousel);
+
+/* ── Instagram Videos Slider (auto-sliding every 3s) ── */
+let videoIdx=0;
+let videoAutoTimer=null;
+const VIDEO_COUNT=4;
+const VIDEOS_VISIBLE=()=>window.innerWidth>=900?3:window.innerWidth>=600?2:1;
+
+function buildVideosDots(){
+  const d=document.getElementById('videosDots');
+  const steps=VIDEO_COUNT-VIDEOS_VISIBLE()+1;
+  d.innerHTML=Array.from({length:steps},(_,i)=>`<button class="videos-dot${i===0?' active':''}" id="vdot${i}" onclick="goVideos(${i})"></button>`).join('');
+}
+function updateVideos(){
+  const track=document.getElementById('videosTrack');
+  const cardW=200+14; // card width + gap
+  track.style.transform=`translateX(${-videoIdx*cardW}px)`;
+  const steps=VIDEO_COUNT-VIDEOS_VISIBLE()+1;
+  document.querySelectorAll('.videos-dot').forEach((d,i)=>d.classList.toggle('active',i===videoIdx));
+}
+function moveVideos(dir){
+  const maxIdx=VIDEO_COUNT-VIDEOS_VISIBLE();
+  videoIdx=Math.max(0,Math.min(videoIdx+dir,maxIdx));
+  updateVideos();
+  restartVideoAuto();
+}
+function goVideos(i){videoIdx=i;updateVideos();restartVideoAuto();}
+function startVideoAuto(){
+  videoAutoTimer=setInterval(()=>{
+    const maxIdx=VIDEO_COUNT-VIDEOS_VISIBLE();
+    videoIdx=videoIdx>=maxIdx?0:videoIdx+1;
+    updateVideos();
+  },3000);
+}
+function restartVideoAuto(){clearInterval(videoAutoTimer);startVideoAuto();}
+
+window.addEventListener('DOMContentLoaded',()=>{
+  buildVideosDots();
+  updateVideos();
+  startVideoAuto();
+});
+
+/* touch swipe on videos */
+(function(){
+  const wrap=document.getElementById('videosTrack');
+  if(!wrap)return;
+  let startX=0;
+  wrap.addEventListener('touchstart',e=>{startX=e.touches[0].clientX;},{passive:true});
+  wrap.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-startX;if(Math.abs(dx)>40)moveVideos(dx<0?1:-1);},{passive:true});
+})();
+window.addEventListener('resize',()=>{buildVideosDots();updateVideos();});
+
+/* ── Counter ── */
+function animateCounter(el){
+  if(el.dataset.animated)return;el.dataset.animated='1';
+  const target=parseInt(el.dataset.target),suffix=el.dataset.suffix||'';
+  let v=0;const step=Math.ceil(target/60);
+  const t=setInterval(()=>{v+=step;if(v>=target){el.textContent=target.toLocaleString()+suffix;clearInterval(t);}else el.textContent=v.toLocaleString()+suffix;},20);
+}
+
+/* ── IntersectionObserver ── */
+const revealObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revealObs.unobserve(e.target);}});},{threshold:0.1});
+const statObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){const n=e.target.querySelector('.stat-num');if(n&&n.dataset.target)animateCounter(n);statObs.unobserve(e.target);}});},{threshold:0.3});
+function initReveal(){document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));document.querySelectorAll('.stat-card').forEach(c=>statObs.observe(c));}
+window.addEventListener('DOMContentLoaded',initReveal);setTimeout(initReveal,200);
+
+/* ── Form ── */
+function submitForm(){
+  const name=document.getElementById('formName').value.trim();
+  const phone=document.getElementById('formPhone').value.trim();
+  if(!name||!phone){alert('Please fill in your name and phone number.');return;}
+  const s=document.getElementById('formSuccess');s.classList.add('show');
+  ['formName','formPhone','formEmail','formService','formMessage'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  setTimeout(()=>s.classList.remove('show'),4000);
+}
+
+/* ── Video Autoplay Fix for iOS ── */
+function fixVideoAutoplay() {
+  const video = document.querySelector('.vb-video');
+  if (video) {
+    // Ensure video is muted
+    video.muted = true;
+
+    // Try to play the video
+    const playPromise = video.play();
+
+    if (playPromise !== undefined) {
+      playPromise.then(_ => {
+        // Autoplay started successfully
+      }).catch(error => {
+        // Autoplay was prevented
+        // Show a play button overlay or try again after user interaction
+        console.log('Autoplay prevented:', error);
+      });
+    }
+  }
+}
+
+// Run on DOM content loaded and after potential user interactions
+document.addEventListener('DOMContentLoaded', fixVideoAutoplay);
+// Also try after a short delay in case the video needs time to load
+setTimeout(fixVideoAutoplay, 500);
+</script>
+</body>
+</html>
