@@ -243,12 +243,10 @@ nav{
 #projects{padding:64px 0;background:#050505;overflow:hidden;}
 .projects-inner{max-width:1140px;margin:0 auto;padding:0 20px;}
 
-/* Continuous scroll wrapper */
 .proj-scroll-outer{
   width:100%;
   overflow:hidden;
   position:relative;
-  /* fade edges */
   mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%);
   -webkit-mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%);
   padding:20px 0 28px;
@@ -270,6 +268,8 @@ nav{
   border:1px solid rgba(255,255,255,.06);
   transition:border-color .3s,box-shadow .3s,transform .3s;
   cursor:pointer;
+  text-decoration:none;
+  display:block;
 }
 @media(max-width:768px){
   .proj-carousel-card{flex:0 0 300px;}
@@ -279,7 +279,6 @@ nav{
   box-shadow:0 20px 60px rgba(14,165,233,.15);
   transform:translateY(-4px);
 }
-/* IMAGE: fills card fully, no zoom trick — tall enough to show full image */
 .proj-carousel-img{
   width:100%;
   height:260px;
@@ -289,6 +288,19 @@ nav{
   transition:transform .5s cubic-bezier(.22,1,.36,1);
 }
 .proj-carousel-card:hover .proj-carousel-img{transform:scale(1.03);}
+
+/* Instagram link indicator overlay */
+.proj-img-wrap{position:relative;overflow:hidden;}
+.proj-ig-badge{
+  position:absolute;top:12px;right:12px;
+  background:rgba(0,0,0,.55);backdrop-filter:blur(6px);
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:8px;padding:5px 9px;
+  display:flex;align-items:center;gap:5px;
+  font-size:10px;font-weight:700;color:rgba(255,255,255,.8);
+  opacity:0;transition:opacity .25s;pointer-events:none;
+}
+.proj-carousel-card:hover .proj-ig-badge{opacity:1;}
 
 .proj-carousel-body{padding:18px 22px 22px;}
 .proj-carousel-tag{
@@ -497,7 +509,7 @@ footer{background:#040404;color:rgba(255,255,255,.35);padding:44px 22px 24px;bor
 <!-- ══════════════ NAV ══════════════ -->
 <nav id="main-nav">
   <div class="nav-inner">
-    <div class="nav-logo" onclick="scrollTo('video-banner')">
+    <div class="nav-logo" onclick="navScrollTo('video-banner')">
       <img src="images/logo.png" alt="Fix N Go Logo" class="nav-logo-img"/>
       <div>
         <div class="nav-logo-name syne">FIX N GO</div>
@@ -505,11 +517,11 @@ footer{background:#040404;color:rgba(255,255,255,.35);padding:44px 22px 24px;bor
       </div>
     </div>
     <div class="nav-links hm">
-      <span class="nav-link" onclick="scrollTo('services')">Services</span>
-      <span class="nav-link" onclick="scrollTo('projects')">Projects</span>
-      <span class="nav-link" onclick="scrollTo('social-videos')">Videos</span>
-      <span class="nav-link" onclick="scrollTo('about')">About</span>
-      <span class="nav-link" onclick="scrollTo('contact')">Contact</span>
+      <span class="nav-link" onclick="navScrollTo('services')">Services</span>
+      <span class="nav-link" onclick="navScrollTo('projects')">Projects</span>
+      <span class="nav-link" onclick="navScrollTo('social-videos')">Videos</span>
+      <span class="nav-link" onclick="navScrollTo('about')">About</span>
+      <span class="nav-link" onclick="navScrollTo('contact')">Contact</span>
       <a href="https://wa.me/254750001001?text=Hello%20Fix%20N%20Go!%20I%20need%20auto%20assistance." target="_blank" rel="noopener noreferrer">
         <button class="btn-whatsapp-nav">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
@@ -522,11 +534,11 @@ footer{background:#040404;color:rgba(255,255,255,.35);padding:44px 22px 24px;bor
     </button>
   </div>
   <div class="mobile-drawer" id="mobileDrawer">
-    <div class="mobile-nav-link" onclick="scrollTo('services')">Services</div>
-    <div class="mobile-nav-link" onclick="scrollTo('projects')">Our Projects</div>
-    <div class="mobile-nav-link" onclick="scrollTo('social-videos')">Videos</div>
-    <div class="mobile-nav-link" onclick="scrollTo('about')">About</div>
-    <div class="mobile-nav-link" onclick="scrollTo('contact')">Contact</div>
+    <div class="mobile-nav-link" onclick="navScrollTo('services')">Services</div>
+    <div class="mobile-nav-link" onclick="navScrollTo('projects')">Our Projects</div>
+    <div class="mobile-nav-link" onclick="navScrollTo('social-videos')">Videos</div>
+    <div class="mobile-nav-link" onclick="navScrollTo('about')">About</div>
+    <div class="mobile-nav-link" onclick="navScrollTo('contact')">Contact</div>
     <a href="https://wa.me/254750001001" target="_blank" rel="noopener noreferrer" style="margin-top:8px;">
       <button class="btn-whatsapp-nav" style="width:100%;padding:12px;justify-content:center;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
@@ -594,7 +606,7 @@ footer{background:#040404;color:rgba(255,255,255,.35);padding:44px 22px 24px;bor
       <h1 class="hero-h1 syne">Drive Better. <span class="gt">Service Smarter.</span></h1>
       <p class="hero-p">Mombasa's trusted automotive workshop — expert technicians, advanced diagnostics, and transparent pricing.</p>
       <div class="hero-btns">
-        <button class="btn-primary" style="font-size:13px;padding:11px 24px;" onclick="scrollTo('contact')">Book a Service</button>
+        <button class="btn-primary" style="font-size:13px;padding:11px 24px;" onclick="navScrollTo('contact')">Book a Service</button>
         <a href="https://wa.me/254750001001?text=Hello%20Fix%20N%20Go!%20I%20need%20auto%20assistance." target="_blank" rel="noopener noreferrer">
           <button style="background:linear-gradient(135deg,#25d366,#128c7e);color:white;border:none;border-radius:9px;padding:11px 20px;font-weight:600;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;font-family:inherit;transition:all .22s;">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
@@ -644,16 +656,13 @@ footer{background:#040404;color:rgba(255,255,255,.35);padding:44px 22px 24px;bor
         Portfolio
       </div>
       <h2 class="section-h2 syne">Our <span class="gt">Projects</span></h2>
-      <p style="color:rgba(255,255,255,.3);font-size:14px;margin-top:8px;">A showcase of our finest work.</p>
+      <p style="color:rgba(255,255,255,.3);font-size:14px;margin-top:8px;">Click any project to see it on Instagram.</p>
       <div class="section-divider"></div>
     </div>
   </div>
 
-  <!-- Continuous scroll — no nav buttons needed -->
   <div class="proj-scroll-outer">
-    <div class="proj-scroll-track" id="projScrollTrack">
-      <!-- cards injected by JS (doubled for seamless loop) -->
-    </div>
+    <div class="proj-scroll-track" id="projScrollTrack"></div>
   </div>
 </section>
 
@@ -775,7 +784,7 @@ footer{background:#040404;color:rgba(255,255,255,.35);padding:44px 22px 24px;bor
         From quick oil changes to full offroad builds and ceramic coatings, Fix N Go is Mombasa's complete automotive partner. Over 5,000 vehicles serviced since 2012.
       </p>
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        <button class="btn-primary" onclick="scrollTo('contact')">Book a Service</button>
+        <button class="btn-primary" onclick="navScrollTo('contact')">Book a Service</button>
         <a href="https://wa.me/254750001001?text=Hello%20Fix%20N%20Go!%20I%20have%20a%20question." target="_blank" rel="noopener noreferrer">
           <button style="background:linear-gradient(135deg,#25d366,#128c7e);color:white;border:none;border-radius:9px;padding:9px 20px;font-weight:600;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;font-family:inherit;">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
@@ -958,7 +967,7 @@ footer{background:#040404;color:rgba(255,255,255,.35);padding:44px 22px 24px;bor
   <div class="footer-inner">
     <div class="footer-grid">
       <div>
-        <div class="footer-logo" onclick="scrollTo('video-banner')">
+        <div class="footer-logo" onclick="navScrollTo('video-banner')">
           <img src="images/logo.png" alt="Fix N Go Logo"/>
           <div>
             <div class="syne" style="font-size:14px;font-weight:800;color:rgba(255,255,255,.8);">FIX N GO</div>
@@ -980,11 +989,11 @@ footer{background:#040404;color:rgba(255,255,255,.35);padding:44px 22px 24px;bor
       </div>
       <div>
         <div class="footer-col-title">Navigation</div>
-        <span class="footer-link" onclick="scrollTo('services')">Services</span>
-        <span class="footer-link" onclick="scrollTo('projects')">Our Projects</span>
-        <span class="footer-link" onclick="scrollTo('social-videos')">Videos</span>
-        <span class="footer-link" onclick="scrollTo('about')">About</span>
-        <span class="footer-link" onclick="scrollTo('contact')">Contact</span>
+        <span class="footer-link" onclick="navScrollTo('services')">Services</span>
+        <span class="footer-link" onclick="navScrollTo('projects')">Our Projects</span>
+        <span class="footer-link" onclick="navScrollTo('social-videos')">Videos</span>
+        <span class="footer-link" onclick="navScrollTo('about')">About</span>
+        <span class="footer-link" onclick="navScrollTo('contact')">Contact</span>
       </div>
       <div>
         <div class="footer-col-title">Contact</div>
@@ -1048,24 +1057,77 @@ const TESTIMONIALS=[
   {name:'Zahir Kara',    role:'LC300 Facelift',             text:'They did a full offroad conversion on my LC300. Lift kit, snorkel, spotlights — flawless execution.',stars:5},
 ];
 
+/* Projects with their Instagram links */
 const PROJECTS=[
-  {tag:'facelift',tagLabel:'Facelift',title:'Full Vehicle Facelift',desc:'Body kit fitment, custom grille, colour-matched trim and paintwork correction.',img:'images/proj_facelift.jpeg'},
-  {tag:'ceramic', tagLabel:'Full Car Wash',title:'Full Interior And Exterior Detail',desc:'Multi-stage machine polish, paint decontamination and Revify self-healing ceramic coat.',img:'images/proj_paint.jpeg'},
-  {tag:'offroad', tagLabel:'Full 4x4 Build',title:'Full 4x4 Offroad Build',desc:'Lift kit, Old Man Emu suspension, ARB snorkel, rock sliders and LED light bar.',img:'images/proj_offroad.jpeg'},
-  {tag:'service', tagLabel:'Ceramic Coating',title:'Ceramic Coating',desc:'Self Healing Ceramic Coating',img:'images/proj_service.jpeg'},
+  {
+    tag:'facelift', tagLabel:'Facelift',
+    title:'Full Vehicle Facelift',
+    desc:'Body kit fitment, custom grille, colour-matched trim and paintwork correction.',
+    img:'images/proj_facelift.jpeg',
+    igUrl: null  /* no specific link provided — opens profile */
+  },
+  {
+    tag:'ceramic', tagLabel:'Full Car Wash',
+    title:'Full Interior And Exterior Detail',
+    desc:'Multi-stage machine polish, paint decontamination and Revify self-healing ceramic coat.',
+    img:'images/proj_paint.jpeg',
+    igUrl:'https://www.instagram.com/p/C8FZRnto_mh/'
+  },
+  {
+    tag:'offroad', tagLabel:'Full 4x4 Build',
+    title:'Full 4x4 Offroad Build',
+    desc:'Lift kit, Old Man Emu suspension, ARB snorkel, rock sliders and LED light bar.',
+    img:'images/proj_offroad.jpeg',
+    igUrl:'https://www.instagram.com/p/DNgQfxGo4r7/'
+  },
+  {
+    tag:'service', tagLabel:'Ceramic Coating',
+    title:'Interior & Exterior Detail',
+    desc:'Full detail and paint restoration.',
+    img:'images/proj_service.jpeg',
+    igUrl:'https://www.instagram.com/p/DFkEKj3oYkB/'
+  },
 ];
 
 /* ── Helpers ── */
 function svgIcon(paths,size=18,color='#0ea5e9',sw=1.7){return`<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`;}
-function scrollTo(id){document.getElementById(id)?.scrollIntoView({behavior:'smooth'});closeMobileMenu();}
-function toggleMenu(){const d=document.getElementById('mobileDrawer'),b=document.getElementById('menuBtn'),o=d.classList.toggle('open');b.classList.toggle('open',o);document.getElementById('menuIcon').innerHTML=o?'<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>':'<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>';}
-function closeMobileMenu(){document.getElementById('mobileDrawer').classList.remove('open');document.getElementById('menuBtn').classList.remove('open');document.getElementById('menuIcon').innerHTML='<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>';}
+
+/* ── FIX: renamed to navScrollTo to avoid conflicting with window.scrollTo ── */
+function navScrollTo(id){
+  const el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth'});
+  closeMobileMenu();
+}
+
+function toggleMenu(){
+  const d=document.getElementById('mobileDrawer'),b=document.getElementById('menuBtn'),o=d.classList.toggle('open');
+  b.classList.toggle('open',o);
+  document.getElementById('menuIcon').innerHTML=o
+    ?'<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>'
+    :'<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>';
+}
+function closeMobileMenu(){
+  document.getElementById('mobileDrawer').classList.remove('open');
+  document.getElementById('menuBtn').classList.remove('open');
+  document.getElementById('menuIcon').innerHTML='<line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>';
+}
 
 /* ── Particles ── */
-(function(){const c=document.getElementById('particles-container');for(let i=0;i<18;i++){const p=document.createElement('div');p.style.cssText=`position:absolute;border-radius:50%;background:rgba(56,189,248,.4);pointer-events:none;left:${Math.random()*100}%;top:${Math.random()*100}%;width:${Math.random()*3+1}px;height:${Math.random()*3+1}px;animation:particleFloat ${Math.random()*8+6}s ${Math.random()*5}s ease-in-out infinite;`;c.appendChild(p);}})();
+(function(){
+  const c=document.getElementById('particles-container');
+  for(let i=0;i<18;i++){
+    const p=document.createElement('div');
+    p.style.cssText=`position:absolute;border-radius:50%;background:rgba(56,189,248,.4);pointer-events:none;left:${Math.random()*100}%;top:${Math.random()*100}%;width:${Math.random()*3+1}px;height:${Math.random()*3+1}px;animation:particleFloat ${Math.random()*8+6}s ${Math.random()*5}s ease-in-out infinite;`;
+    c.appendChild(p);
+  }
+})();
 
 /* ── Marquee ── */
-(function(){const items=SERVICES.map(s=>`<span class="marquee-item">${svgIcon(ICONS[s.icon],12,'rgba(14,165,233,.7)',2)}&nbsp;${s.title}</span>`).join('');const t=document.getElementById('marqueeTrack');t.innerHTML=items.repeat(4);})();
+(function(){
+  const items=SERVICES.map(s=>`<span class="marquee-item">${svgIcon(ICONS[s.icon],12,'rgba(14,165,233,.7)',2)}&nbsp;${s.title}</span>`).join('');
+  const t=document.getElementById('marqueeTrack');
+  t.innerHTML=items.repeat(4);
+})();
 
 /* ── Services ── */
 (function(){
@@ -1079,31 +1141,31 @@ function closeMobileMenu(){document.getElementById('mobileDrawer').classList.rem
   `).join('');
 })();
 
-/* ── Projects — Continuous CSS scroll (doubled cards) ── */
+/* ── Projects — Continuous CSS scroll with Instagram links ── */
 (function(){
   const track = document.getElementById('projScrollTrack');
 
-  // Build one card's HTML
+  const igIconSvg = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>`;
+
   function cardHTML(p) {
+    const url = p.igUrl || 'https://www.instagram.com/fixandgo_autoservices/';
     return `
-      <div class="proj-carousel-card">
-        <img class="proj-carousel-img" src="${p.img}" alt="${p.title}" loading="lazy"
-          onerror="this.style.background='#1a1a1a';this.style.minHeight='260px';"/>
+      <a class="proj-carousel-card" href="${url}" target="_blank" rel="noopener noreferrer">
+        <div class="proj-img-wrap">
+          <img class="proj-carousel-img" src="${p.img}" alt="${p.title}" loading="lazy"
+            onerror="this.style.background='#1a1a1a';this.style.minHeight='260px';"/>
+          <div class="proj-ig-badge">${igIconSvg} View on Instagram</div>
+        </div>
         <div class="proj-carousel-body">
           <span class="proj-carousel-tag tag-${p.tag}">${p.tagLabel}</span>
           <div class="proj-carousel-title">${p.title}</div>
           <div class="proj-carousel-desc">${p.desc}</div>
         </div>
-      </div>`;
+      </a>`;
   }
 
   // Double the cards for seamless looping
-  const allCards = [...PROJECTS, ...PROJECTS].map(cardHTML).join('');
-  track.innerHTML = allCards;
-
-  // Calculate the total width of ONE set and set it as the animation distance
-  // We use CSS: animation scrollLeft translates -50% (half = one set of cards)
-  // This works because we duplicated the cards, so 50% = exactly one full loop
+  track.innerHTML = [...PROJECTS, ...PROJECTS].map(cardHTML).join('');
 })();
 
 /* ── Testimonials ── */
